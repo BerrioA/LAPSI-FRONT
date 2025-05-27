@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { Input } from "@heroui/react";
 
 export const EyeSlashFilledIcon = (props) => {
@@ -61,7 +61,7 @@ export const EyeFilledIcon = (props) => {
   );
 };
 
-export const InputPassword = ({ label, placeholder, onChange }) => {
+export const InputPassword = ({ label, placeholder, onChange, required }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -86,6 +86,7 @@ export const InputPassword = ({ label, placeholder, onChange }) => {
       placeholder={placeholder}
       type={isVisible ? "text" : "password"}
       onChange={onChange}
+      required={required}
     />
   );
 };

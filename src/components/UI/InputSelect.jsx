@@ -8,8 +8,8 @@ export const documentTypes = [
 export const InputSelect = ({ label, onChange }) => {
   return (
     <div className="w-full flex flex-col">
-      <div className="flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-        <Select label={label} onChange={onChange}>
+      <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+        <Select label={label} required onChange={onChange}>
           {documentTypes.map((type) => (
             <SelectItem key={type.key}>{type.label}</SelectItem>
           ))}
