@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { InputField } from "../../../components/UI/InputField";
 import { InputPassword } from "../../../components/UI/InputPassword";
 import { SecondaryButton } from "../../../components/UI/SecondaryButton";
@@ -34,7 +35,7 @@ export const LoginForm = () => {
             <p className="text-sm text-off-white">
               ¿No tienes una cuenta?,{" "}
               <span className="text-secondary font-semibold">
-                <to>registrate aquí</to>
+                <Link to={"/register"}>registrate aquí</Link>
               </span>
             </p>
           </div>

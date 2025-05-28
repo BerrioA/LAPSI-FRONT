@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -7,28 +7,25 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-  Link,
   Button,
 } from "@heroui/react";
+import { Link } from "react-router-dom";
 
-export const AcmeLogo = () => {
+export const LapsiLogo = () => {
   return <img className="h-9 w-9" src="/Logo.webp" alt="Logo" />;
 };
 
 export const Nav = () => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [
-    "Profile",
-    "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
-    "Log Out",
+    "Inicio",
+    "Salas",
+    "Misión",
+    "Visión",
+    "Sobre Nosotros",
+    "Iniciar sesión",
+    "Registrarse",
   ];
 
   return (
@@ -39,48 +36,47 @@ export const Nav = () => {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <AcmeLogo />
+          <LapsiLogo />
           <p className="font-bold text-inherit">LAPSI</p>
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link className="font-semibold text-secondary" href="#">
+          <Link className="font-semibold text-secondary" to="/">
             Inicio
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link aria-current="page" href="#">
+          <Link aria-current="page" to="#">
             Salas
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link className="font-semibold text-secondary" href="#">
+          <Link className="font-semibold text-secondary" to="#">
             Misión
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link className="font-semibold text-secondary" href="#">
+          <Link className="font-semibold text-secondary" to="#">
             Visión
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link className="font-semibold text-secondary" href="#">
+          <Link className="font-semibold text-secondary" to="#">
             Sobre Nosotros
           </Link>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex font-semibold">
-          <Link href="#">Iniciar sesión</Link>
+        <NavbarItem className="text-primary hidden lg:flex font-semibold">
+          <Link to="/login">Iniciar sesión</Link>
         </NavbarItem>
         <NavbarItem>
           <Button
             as={Link}
-            color="primary"
-            className="font-semibold text-secondary"
-            href="#"
+            className="font-semibold bg-primary-900 text-off-white"
+            to="/register"
             variant="flat"
           >
             Registrarse
@@ -99,7 +95,7 @@ export const Nav = () => {
                   ? "danger"
                   : "foreground"
               }
-              href="#"
+              to="#"
               size="lg"
             >
               {item}

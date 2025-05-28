@@ -4,6 +4,7 @@ import { InputField } from "../../../components/UI/InputField";
 import { InputPassword } from "../../../components/UI/InputPassword";
 import { InputSelect } from "../../../components/ui/InputSelect";
 import { PrimaryButton } from "../../../components/UI/PrimaryButton";
+import { Link } from "react-router-dom";
 
 export const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -88,10 +89,10 @@ export const RegisterForm = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4">
+    <div className="w-full max-w-4xl mx-auto p-4 mb-72">
       <form
         onSubmit={handleRegisterUser}
-        className="bg-white lg:w-full sm:w-full py-6 px-6 mx-auto rounded-lg shadow-lg border border-gray-100"
+        className="bg-white lg:w-full sm:w-full py-6 px-6 mx-auto rounded-lg shadow-lg border border-gray-100 overflow-y-auto"
       >
         <div className="flex flex-col w-full gap-6">
           {/* Mensajes de estado */}
@@ -275,10 +276,10 @@ export const RegisterForm = () => {
           </div>
 
           <div className="text-center">
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 font-semibold">
               ¿Ya tienes una cuenta?,{" "}
               <span className="text-primary">
-                <to>inicia sesión aquí</to>
+                <Link to={"/login"}>inicia sesión aquí</Link>
               </span>
             </p>
           </div>
