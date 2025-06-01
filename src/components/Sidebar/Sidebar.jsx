@@ -1,4 +1,4 @@
-import { SidebarHeader, SidebarItemList } from "./index";
+import { SidebarHeader, SidebarItemList } from "../Sidebar";
 
 export const Sidebar = () => {
   return (

@@ -1,5 +1,5 @@
 import { PublicLayout } from "../../../layouts/PublicLayout";
-import { RegisterForm } from "../components/RegisterForm";
+import { RegisterForm } from "../components/RegisterForm"; 
 
 export const RegisterPage = () => {
   return (

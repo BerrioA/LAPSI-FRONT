@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
-import { InputField } from "../../../components/UI/InputField";
-import { InputPassword } from "../../../components/UI/InputPassword";
-import { SecondaryButton } from "../../../components/UI/SecondaryButton";
+import {
+  InputField,
+  InputPassword,
+  SecondaryButton,
+} from "../../../components/UI";
 
 export const LoginForm = () => {
   return (

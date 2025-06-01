@@ -1,7 +1,5 @@
-import { Chevron } from "../UI/Chevron";
-import { ChevronBurger } from "../UI/ChevronBurger";
-import { InputSearch } from "../UI/InputSearch";
-import { UserProfile } from "./UserProfile";
+import { Chevron, ChevronBurger, InputSearch } from "../UI";
+import { UserProfile } from "../Navbar";
 
 export const Navbar = () => {
   return (

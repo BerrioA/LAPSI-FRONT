@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
-import { InputField } from "../../../components/UI/InputField";
-import { InputPassword } from "../../../components/UI/InputPassword";
-import { InputSelect } from "../../../components/ui/InputSelect";
-import { PrimaryButton } from "../../../components/UI/PrimaryButton";
 import { Link } from "react-router-dom";
+import {
+  InputField,
+  InputPassword,
+  InputSelect,
+  PrimaryButton,
+} from "../../../components/UI";
 
 export const RegisterForm = () => {
   const [formData, setFormData] = useState({

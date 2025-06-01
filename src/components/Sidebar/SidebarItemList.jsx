@@ -1,6 +1,6 @@
 import { memo, useCallback, useState } from "react";
-import { SidebarItem } from "./SidebarItem";
-import { ItemsDefault } from "../../const/Items";
+import { SidebarItem } from "../Sidebar";
+import { ItemsDefault } from "../../const";
 
 export const SidebarItemList = memo(() => {
   const [activeIndex, setActiveIndex] = useState(0);
