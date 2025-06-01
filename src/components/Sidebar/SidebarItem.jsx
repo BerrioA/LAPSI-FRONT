@@ -2,8 +2,6 @@ import { memo } from "react";
 
 export const SidebarItem = memo(
   ({ items, isActive, onItemClick, index, icons }) => {
-    console.log(`SidebarItem: ${items} re-rendered.`);
-
     const activeClass =
       "bg-primary transition-all text-off-white shadow-xl transition-colors  duration-500";
     const inactiveClass =

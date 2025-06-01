@@ -1,4 +1,4 @@
-import { CardRooms } from "../../components/UI/CardRooms";
+import { CardRooms } from "../components/UI/CardRooms";
 
 export const Rooms = () => {
   return (

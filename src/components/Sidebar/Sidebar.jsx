@@ -1,6 +1,4 @@
-// Sidebar.jsx
-import { SidebarHeader } from "./SidebarHeader";
-import { SidebarItemList } from "./SidebarItemList";
+import { SidebarHeader, SidebarItemList } from "./index";
 
 export const Sidebar = () => {
   return (
