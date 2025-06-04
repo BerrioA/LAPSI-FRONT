@@ -5,7 +5,7 @@ export const documentTypes = [
   { key: "TI", label: "TI" },
 ];
 
-export const InputSelect = ({ label, onChange }) => {
+export const InputSelect = ({ label, onChange, options }) => {
   return (
     <div className="w-full flex flex-col">
       <div className="flex w-full flex-wrap md:flex-nowrap gap-4">

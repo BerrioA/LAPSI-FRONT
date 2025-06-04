@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { SecondaryButton } from "../components/UI/SecondaryButton";
-import { Text } from "../components/UI/Text";
+import { SecondaryButton, Text } from "../components/UI";
 
 export const Hero = () => {
   const navigate = useNavigate();

@@ -1,5 +1,5 @@
-import { PublicLayout } from "../layouts/PublicLayout";
-import { Hero } from "../sections/Hero";
+import { PublicLayout } from "../layouts/PublicLayout"; 
+import { Hero } from "../sections"; 
 
 export const Home = () => {
   return (

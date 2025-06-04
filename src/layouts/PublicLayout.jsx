@@ -1,5 +1,4 @@
-import { Footer } from "../components/UI/Footer";
-import { Nav } from "../components/UI/Nav";
+import { Footer, Nav } from "../components/UI"; 
 
 export const PublicLayout = ({ children }) => {
   return (

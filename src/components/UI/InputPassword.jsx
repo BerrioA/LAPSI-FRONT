@@ -61,7 +61,13 @@ export const EyeFilledIcon = (props) => {
   );
 };
 
-export const InputPassword = ({ label, placeholder, onChange, required }) => {
+export const InputPassword = ({
+  label,
+  placeholder,
+  value,
+  onChange,
+  required = true,
+}) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -84,6 +90,7 @@ export const InputPassword = ({ label, placeholder, onChange, required }) => {
       }
       label={label}
       placeholder={placeholder}
+      value={value}
       type={isVisible ? "text" : "password"}
       onChange={onChange}
       required={required}

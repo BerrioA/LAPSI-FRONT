@@ -7,9 +7,10 @@ import {
   InputSelect,
   PrimaryButton,
 } from "../../../components/UI";
+import { useFormFields } from "../../../hooks";
 
 export const RegisterForm = () => {
-  const [formData, setFormData] = useState({
+  const initialState = {
     name: "",
     middle_name: "",
     last_name: "",
@@ -20,18 +21,11 @@ export const RegisterForm = () => {
     email: "",
     password: "",
     confirmPassword: "",
-  });
+  };
+  const { getFieldProps } = useFormFields(initialState);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-
-  const handleInputChange = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-    if (error) setError("");
-  };
 
   const handleRegisterUser = async (e) => {
     e.preventDefault();
@@ -78,10 +72,6 @@ export const RegisterForm = () => {
         const errorMessage = error.response.data.error;
 
         setError(errorMessage);
-      } else if (error.request) {
-        setError(
-          "No se pudo conectar con el servidor. Verifica tu conexión a internet."
-        );
       } else {
         setError("Ocurrió un error inesperado. Inténtalo de nuevo.");
       }
@@ -97,7 +87,6 @@ export const RegisterForm = () => {
         className="bg-white lg:w-full sm:w-full py-6 px-6 mx-auto rounded-lg shadow-lg border border-gray-100 overflow-y-auto"
       >
         <div className="flex flex-col w-full gap-6">
-          {/* Mensajes de estado */}
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
               <p className="text-sm">{error}</p>
@@ -112,17 +101,13 @@ export const RegisterForm = () => {
             </div>
           )}
 
-          {/* Nombres */}
           <div className="grid xl:grid-cols-2 md:grid-cols-1 gap-6">
             <div className="block">
               <p className="font-semibold mb-2 text-gray-700">Nombre *</p>
               <InputField
-                label={"Primer nombre"}
-                type={"text"}
-                value={formData.name}
-                onChange={(e) => handleInputChange("name", e.target.value)}
-                required={true}
-                disabled={isLoading}
+                label="Primer nombre"
+                name="name"
+                {...getFieldProps("name")}
               />
             </div>
 
@@ -130,18 +115,13 @@ export const RegisterForm = () => {
               <p className="font-semibold mb-2 text-gray-700">Segundo nombre</p>
               <InputField
                 label={"Segundo nombre (Opcional)"}
-                type={"text"}
-                value={formData.middle_name}
-                onChange={(e) =>
-                  handleInputChange("middle_name", e.target.value)
-                }
+                name="middle_name"
+                {...getFieldProps("middle_name")}
                 required={false}
-                disabled={isLoading}
               />
             </div>
           </div>
 
-          {/* Apellidos */}
           <div className="grid xl:grid-cols-2 sm:grid-cols-1 gap-6">
             <div className="block">
               <p className="font-semibold mb-2 text-gray-700">
@@ -149,11 +129,8 @@ export const RegisterForm = () => {
               </p>
               <InputField
                 label={"Primer apellido"}
-                type={"text"}
-                value={formData.last_name}
-                onChange={(e) => handleInputChange("last_name", e.target.value)}
-                required={true}
-                disabled={isLoading}
+                name="last_name"
+                {...getFieldProps("last_name")}
               />
             </div>
 
@@ -163,18 +140,12 @@ export const RegisterForm = () => {
               </p>
               <InputField
                 label={"Segundo apellido"}
-                type={"text"}
-                value={formData.second_last_name}
-                onChange={(e) =>
-                  handleInputChange("second_last_name", e.target.value)
-                }
-                required={true}
-                disabled={isLoading}
+                name="second_last_name"
+                {...getFieldProps("second_last_name")}
               />
             </div>
           </div>
 
-          {/* Documento */}
           <div className="grid xl:grid-cols-2 sm:grid-cols-1 gap-6">
             <div className="block">
               <p className="font-semibold mb-2 text-gray-700">
@@ -182,12 +153,9 @@ export const RegisterForm = () => {
               </p>
               <InputSelect
                 label={"Tipo de documento"}
-                value={formData.document_type}
-                onChange={(e) =>
-                  handleInputChange("document_type", e.target.value)
-                }
-                required={true}
-                disabled={isLoading}
+                name="document_type"
+                options={["CC", "TI"]}
+                {...getFieldProps("document_type")}
               />
             </div>
             <div className="block">
@@ -197,27 +165,20 @@ export const RegisterForm = () => {
               <InputField
                 label={"Número de documento"}
                 type={"text"}
-                value={formData.document_number}
-                onChange={(e) =>
-                  handleInputChange("document_number", e.target.value)
-                }
-                required={true}
-                disabled={isLoading}
+                name="document_number"
+                {...getFieldProps("document_number")}
               />
             </div>
           </div>
 
-          {/* Contacto */}
           <div className="grid xl:grid-cols-2 sm:grid-cols-1 gap-6">
             <div className="block">
               <p className="font-semibold mb-2 text-gray-700">Celular *</p>
               <InputField
                 label={"Celular"}
                 type={"tel"}
-                value={formData.cellphone}
-                onChange={(e) => handleInputChange("cellphone", e.target.value)}
-                required={true}
-                disabled={isLoading}
+                name="cellphone"
+                {...getFieldProps("cellphone")}
               />
             </div>
 
@@ -228,25 +189,20 @@ export const RegisterForm = () => {
               <InputField
                 label={"Correo"}
                 type={"email"}
-                value={formData.email}
-                onChange={(e) => handleInputChange("email", e.target.value)}
-                required={true}
-                disabled={isLoading}
+                name="email"
+                {...getFieldProps("email")}
               />
             </div>
           </div>
 
-          {/* Contraseñas */}
           <div className="grid xl:grid-cols-2 sm:grid-cols-1 gap-6">
             <div className="block">
               <p className="font-semibold mb-2 text-gray-700">Contraseña *</p>
               <InputPassword
                 label={"Contraseña"}
+                name="password"
                 placeholder={"Mínimo 6 caracteres"}
-                value={formData.password}
-                onChange={(e) => handleInputChange("password", e.target.value)}
-                required={true}
-                disabled={isLoading}
+                {...getFieldProps("password")}
               />
             </div>
 
@@ -256,18 +212,13 @@ export const RegisterForm = () => {
               </p>
               <InputPassword
                 label={"Confirmar contraseña"}
+                name="confirmPassword"
                 placeholder={"Confirmar contraseña"}
-                value={formData.confirmPassword}
-                onChange={(e) =>
-                  handleInputChange("confirmPassword", e.target.value)
-                }
-                required={true}
-                disabled={isLoading}
+                {...getFieldProps("confirmPassword")}
               />
             </div>
           </div>
 
-          {/* Botón de registro */}
           <div className="block text-center mt-6">
             <PrimaryButton
               text={isLoading ? "Registrando..." : "Registrarse"}

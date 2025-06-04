@@ -1,3 +1,4 @@
+import { CardInformation } from "./CardInfo";
 import { CardRooms } from "./CardRooms";
 import { Chevron } from "./Chevron";
 import { ChevronBurger } from "./ChevronBurger";
@@ -28,4 +29,5 @@ export {
   SecondaryButton,
   Text,
   UsersTable,
+  CardInformation,
 };

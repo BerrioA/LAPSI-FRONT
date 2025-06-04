@@ -1,13 +1,10 @@
-import { memo, useCallback, useState } from "react";
+import { memo } from "react";
 import { SidebarItem } from "../Sidebar";
 import { ItemsDefault } from "../../const";
+import { useLocation } from "react-router-dom";
 
 export const SidebarItemList = memo(() => {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const handleItemClick = useCallback((index) => {
-    setActiveIndex(index);
-  }, []);
+  const location = useLocation();
 
   return (
     <ul className="flex flex-col gap-2 p-4">
@@ -15,10 +12,10 @@ export const SidebarItemList = memo(() => {
         <SidebarItem
           key={index}
           items={item.label}
-          isActive={activeIndex === index}
-          onItemClick={handleItemClick}
+          isActive={location.pathname === item.href}
           index={index}
           icons={item.icon}
+          to={item.href}
         />
       ))}
     </ul>
