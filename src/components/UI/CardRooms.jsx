@@ -1,45 +1,51 @@
-import { Card, CardHeader, CardFooter, Image, Button } from "@heroui/react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@heroui/react";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 
-export const CardRooms = () => {
+export const CardRooms = ({ id, room_name, quotas, description }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/rooms/${id}`);
+  };
+
   return (
-    <div>
-      <Card
-        isFooterBlurred
-        className="w-full h-[300px] col-span-12 sm:col-span-7"
-      >
-        <CardHeader className="absolute z-10 top-1 flex-col items-start">
-          <p className="text-tiny text-white/60 uppercase font-bold">
-            Your day your way
-          </p>
-          <h4 className="text-white/90 font-medium text-xl">
-            Your checklist for better sleep
-          </h4>
-        </CardHeader>
-        <Image
-          removeWrapper
-          alt="Relaxing app background"
-          className="z-0 w-full h-full object-cover"
-          src="https://heroui.com/images/card-example-5.jpeg"
+    <div className="bg-white rounded-2xl shadow-md overflow-hidden transition hover:shadow-lg hover:scale-[1.01] duration-200 ease-in-out flex flex-col">
+      {/* Imagen */}
+      <div className="h-48 w-full overflow-hidden">
+        <img
+          src="https://www.up.edu.mx/wp-content/uploads/2022/09/nuevos-laboratorios-de-psicologia-int-dos.jpg"
+          alt={`Sala ${room_name}`}
+          className="object-cover w-full h-full"
         />
-        <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
-          <div className="flex flex-grow gap-2 items-center">
-            <Image
-              alt="Breathing app icon"
-              className="rounded-full w-10 h-11 bg-black"
-              src="https://heroui.com/images/breathing-app-icon.jpeg"
-            />
-            <div className="flex flex-col">
-              <p className="text-tiny text-white/60">Breathing App</p>
-              <p className="text-tiny text-white/60">
-                Get a good night&#39;s sleep.
-              </p>
-            </div>
+      </div>
+
+      {/* Contenido */}
+      <div className="p-4 flex flex-col justify-between flex-grow">
+        <div>
+          <h2 className="text-xl font-semibold text-secondary mb-1 truncate">
+            {room_name || "Sala sin nombre"}
+          </h2>
+          <p className="text-sm text-gray-500 line-clamp-2">
+            {description || "Sin descripción disponible."}
+          </p>
+        </div>
+
+        <div className="mt-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <InformationCircleIcon className="h-5 w-5 text-primary" />
+            <span>{quotas || 0} cupos disponibles</span>
           </div>
-          <Button radius="full" size="sm">
-            Get App
+          <Button
+            radius="full"
+            size="sm"
+            className="bg-primary text-white px-4 py-1 font-medium hover:brightness-110 transition"
+            onClick={handleClick}
+          >
+            Reservar
           </Button>
-        </CardFooter>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };
