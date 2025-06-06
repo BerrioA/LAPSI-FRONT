@@ -12,6 +12,7 @@ import { Nav } from "./Nav";
 import { PrimaryButton } from "./PrimaryButton";
 import { SecondaryButton } from "./SecondaryButton";
 import { Text } from "./Text";
+import { ThirdButton } from "./ThirdButton";
 import { UsersTable } from "./UsersTable";
 
 export {
@@ -30,4 +31,5 @@ export {
   Text,
   UsersTable,
   CardInformation,
+  ThirdButton,
 };

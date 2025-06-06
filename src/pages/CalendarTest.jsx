@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import { DashboardLayout } from "../layouts";
-import { SecondaryButton } from "../components/UI";
+import { ThirdButton } from "../components/UI";
 import { DayColumn } from "../components/Calendar/DayColumn";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import useCalendarBlocks from "../hooks/useCalendarBlocks";
@@ -42,11 +42,12 @@ export const CalendarTest = () => {
 
         <div className="flex justify-center gap-4 mb-8">
           {[1, 2].map((hr) => (
-            <SecondaryButton
+            <ThirdButton
               key={hr}
               text={
                 <span className="flex items-center gap-2">
-                  <ClockIcon className="w-5 h-5" /> {hr} Hora{hr > 1 ? "s" : ""}
+                  <ClockIcon className="w-5 h-5" /> {hr} Hora
+                  {hr > 1 ? "s" : ""}
                 </span>
               }
               type="button"

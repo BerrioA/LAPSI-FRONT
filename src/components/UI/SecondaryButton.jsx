@@ -1,22 +1,13 @@
-export const SecondaryButton = ({
-  text,
-  onClick,
-  type = "button",
-  active = false,
-}) => {
+import { Button } from "@heroui/react";
+
+export const SecondaryButton = ({ text, onClick, type = "button" }) => {
   return (
-    <button
-      type={type}
+    <Button
+      className="bg-gradient-to-tr xl:w-xl sm:w-full bg-secondary text-white font-semibold shadow-lg"
       onClick={onClick}
-      className={`px-5 py-2.5 rounded-full font-medium transition-all duration-200
-        flex items-center justify-center gap-2 border shadow-sm
-        ${
-          active
-            ? "bg-primary text-white border-primary"
-            : "bg-white text-secondary border-gray-300 hover:bg-primary hover:text-white"
-        }`}
+      type={type}
     >
-      {text}
-    </button>
+      {text || "Botón"}
+    </Button>
   );
 };
