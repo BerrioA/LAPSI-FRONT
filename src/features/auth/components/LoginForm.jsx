@@ -1,22 +1,45 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   InputField,
   InputPassword,
   SecondaryButton,
 } from "../../../components/UI";
+import { useAuthStore } from "../../../stores";
+import { useState } from "react";
 
 export const LoginForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const { login, loading, error } = useAuthStore();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const success = await login({ email, password });
+    if (success) navigate("/dashboard");
+  };
+
   return (
     <div className="w-full max-w-xl mx-auto p-4">
-      <form className=" lg:w-full sm:w-full py-6 px-6 mx-auto rounded-lg">
+      {loading && <p>Cargando...</p>}
+      {error && <p>{error}</p>}
+      <form
+        onSubmit={handleSubmit}
+        className=" lg:w-full sm:w-full py-6 px-6 mx-auto rounded-lg"
+      >
         <div className="flex flex-col w-full gap-6">
-          {/* Contacto */}
           <div className="grid grid-cols-1 gap-6">
             <div className="block">
               <p className="font-semibold mb-2 text-off-white">
                 Correo electrónico *
               </p>
-              <InputField label={"Correo"} type={"email"} required={true} />
+              <InputField
+                label={"Correo"}
+                type={"email"}
+                required={true}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
 
             <div className="block">
@@ -25,6 +48,7 @@ export const LoginForm = () => {
                 label={"Contraseña"}
                 placeholder={"Contraseña"}
                 required={true}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>
