@@ -6,7 +6,6 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const useAuthStore = create(
   devtools((set) => ({
-    user: null,
     token: null,
     isLoggedIn: false,
     loading: false,
@@ -40,25 +39,52 @@ export const useAuthStore = create(
       }
     },
 
-    // refreshAccessToken: async () => {
-    //   try {
-    //     const response = await axios.post(`${BASE_URL}/auth/refresh`, {
-    //       withCredentials: true,
-    //     });
+    register: async (formData) => {
+      set({ loading: true, error: null });
 
-    //     if (response.status !== 200) {
-    //       throw new Error("Error al intentar generar el refreshToken");
-    //     }
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/auth/register`,
+          {
+            formData,
+          },
+          { withCredentials: true }
+        );
 
-    //     console.log(response.data);
+        if (response.status !== 201) {
+          throw new Error("Error al intentar relizar el registro");
+        }
 
-    //     set({ refreshToken: response.data });
-    //   } catch (err) {
-    //     console.log("Error en el Refresh", err);
-    //     set({ error: err.response?.data?.message });
-    //   }
-    // },
+        return true;
+      } catch (err) {
+        set({ error: err.response?.data?.message });
+        return false;
+      } finally {
+        set({ loading: false });
+      }
+    },
 
-    logout: () => set({ user: null }),
+    refreshAccessToken: async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/auth/refresh`, {
+          withCredentials: true,
+        });
+
+        const { token } = response.data;
+
+        set({ token, isLoggedIn: true });
+
+        return token;
+      } catch (err) {
+        set({
+          error: err.response?.data?.message,
+          isLoggedIn: false,
+          token: null,
+        });
+        return null;
+      }
+    },
+
+    logout: () => set({}),
   }))
 );
