@@ -1,4 +1,13 @@
+import { useEffect } from "react";
+import { useProfileStore } from "../../stores";
+
 export const UserProfile = () => {
+  const { name, last_name, email, profile } = useProfileStore();
+
+  useEffect(() => {
+    profile();
+  }, []);
+
   return (
     <div className="flex w-[220px] items-center gap-4">
       <img
@@ -7,8 +16,10 @@ export const UserProfile = () => {
         className="w-9 h-9 bg-slate-400 rounded-xl"
       />
       <div className="flex flex-col">
-        <p className="font-semibold text-secondary">Alejandro Berrio</p>
-        <span className="text-sm text-gray-500">alejandro@cecar.edu.co</span>
+        <p className="font-semibold text-secondary">
+          {name} {last_name}
+        </p>
+        <span className="text-sm text-gray-500">{email}</span>
       </div>
       <div></div>
     </div>

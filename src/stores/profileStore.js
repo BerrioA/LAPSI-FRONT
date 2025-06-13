@@ -35,8 +35,6 @@ export const useProfileStore = create(
           },
         });
 
-        console.log("Datos del perfil: ", response.data);
-
         set({
           uid: response.data.uid,
           name: response.data.name,
