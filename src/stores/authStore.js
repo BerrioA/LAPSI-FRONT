@@ -39,17 +39,32 @@ export const useAuthStore = create(
       }
     },
 
-    register: async (formData) => {
+    register: async (data) => {
+      const {
+        name,
+        middle_name,
+        last_name,
+        second_last_name,
+        type_document,
+        document_number,
+        cellphone,
+        email,
+        password,
+      } = data;
       set({ loading: true, error: null });
 
       try {
-        const response = await axios.post(
-          `${BASE_URL}/auth/register`,
-          {
-            formData,
-          },
-          { withCredentials: true }
-        );
+        const response = await axios.post(`${BASE_URL}/users`, {
+          name,
+          middle_name,
+          last_name,
+          second_last_name,
+          type_document,
+          document_number,
+          cellphone,
+          email,
+          password,
+        });
 
         if (response.status !== 201) {
           throw new Error("Error al intentar relizar el registro");
@@ -57,7 +72,7 @@ export const useAuthStore = create(
 
         return true;
       } catch (err) {
-        set({ error: err.response?.data?.message });
+        set({ error: err.response?.data?.error });
         return false;
       } finally {
         set({ loading: false });
