@@ -1,3 +1,4 @@
 import { Hero } from "./Hero";
+import { MissionVision } from "./MissionVision";
 
-export { Hero };
+export { Hero, MissionVision };
