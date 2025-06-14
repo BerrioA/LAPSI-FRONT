@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import moment from "moment";
 
-const useCalendarBlocks = (roomId, currentDate, selectedDuration) => {
+export const useCalendarBlocks = (roomId, currentDate, selectedDuration) => {
   const [allBlocks, setAllBlocks] = useState([]);
   const [filteredBlocks, setFilteredBlocks] = useState([]);
 
@@ -49,4 +49,3 @@ const useCalendarBlocks = (roomId, currentDate, selectedDuration) => {
   return { filteredBlocks };
 };
 
-export default useCalendarBlocks;

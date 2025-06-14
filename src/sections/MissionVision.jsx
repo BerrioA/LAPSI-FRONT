@@ -70,14 +70,19 @@ export const MissionVision = () => {
                     className="text-lg leading-relaxed"
                     style={{ color: "#284B63" }}
                   >
-                    Capacitar a individuos y comunidades para{" "}
+                    El laboratorio de psicología de la{" "}
                     <strong className="text-primary">
-                      adoptar un estilo de vida sostenible y consciente
+                      Corporación Universitaria del Caribe CECAR
                     </strong>
-                    , fomentando la armonía con el medio ambiente y promoviendo
-                    el bienestar integral. Buscamos ser un catalizador para el
-                    cambio, inspirando acciones que conduzcan a un futuro más
-                    equitativo y respetuoso con la vida.
+                    como unidad académico-administrativa, se encuentra
+                    comprometida con la formación de profesionales idóneos, con
+                    visión científica, sentido crítico-reflexivo; capaces de
+                    satisfacer las demandas de su entorno profesional y social.
+                    Para ello, tiene a su disposición el talento humano y los
+                    recursos técnicos necesarios para su servicio. Reafirmando
+                    su compromiso de esta manera con la investigación
+                    científica, el desarrollo y la transformación social de la
+                    región caribe.
                   </Text>
                 </div>
               </div>
@@ -177,15 +182,17 @@ export const MissionVision = () => {
                     className="text-lg leading-relaxed"
                     style={{ color: "#284B63" }}
                   >
-                    Ser la{" "}
+                    El laboratorio de psicología se{" "}
                     <strong className="text-primary">
-                      referencia global en soluciones innovadoras y sostenibles
+                      proyecta a ser reconocido como una unidad de apoyo e
+                      investigación científica desde los diferentes campos de
+                      aplicación de la psicología
                     </strong>{" "}
-                    que empoderen a las personas para construir un mundo donde
-                    el desarrollo humano coexista en equilibrio con la salud del
-                    planeta. Visualizamos un futuro donde cada decisión, grande
-                    o pequeña, contribuya a una sociedad más justa, resiliente y
-                    próspera para todas las generaciones.
+                    , en el departamento de sucre y a nivel nacional; ofreciendo
+                    servicios de medición, evaluación y capacitación a nivel a
+                    nivel institucional y externos de la región. Seremos un
+                    laboratorio con la mejor tecnología y talento humano al
+                    servicio de a investigaciones de innovación social.
                   </Text>
                 </div>
               </div>

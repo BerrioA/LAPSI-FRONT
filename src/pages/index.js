@@ -1,6 +1,6 @@
 import { Home } from "./Home";
-import { Rooms } from "./Rooms";
 import { Dashboard } from "./Dashboard";
 import { NotFound } from "./NotFound";
+import VerifyAccount from "./VerifyAccount";
 
-export { Home, Rooms, Dashboard, NotFound };
+export { Home, Dashboard, NotFound, VerifyAccount };
