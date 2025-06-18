@@ -1,3 +1,4 @@
+import { HeadPage } from "../components";
 import { DashboardLayout } from "../layouts";
 import {
   AcademicCapIcon,
@@ -5,14 +6,6 @@ import {
   ClipboardDocumentListIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
-
-const palette = {
-  primary: "#B29A64",
-  secondary: "#152E3A",
-  lightGray: "#F5F5F5",
-  offWhite: "#FAFAFA",
-  fullWhite: "#FFFFFF",
-};
 
 const stats = [
   {
@@ -62,10 +55,10 @@ const StatCard = ({ title, count, icon: Icon, bg, iconColor }) => (
 export const Dashboard = () => {
   return (
     <DashboardLayout>
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-secondary">Dashboard</h1>
-        <p className="text-gray-500 mt-1">Resumen general del sistema</p>
-      </div>
+      <HeadPage
+        page={"Dashboard"}
+        description={"Resumen general del sistema"}
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (

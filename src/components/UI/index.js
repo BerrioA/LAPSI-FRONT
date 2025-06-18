@@ -5,6 +5,7 @@ import { ChevronBurger } from "./ChevronBurger";
 import { DateCalendar } from "./DateCalendar";
 import { Error } from "./Error";
 import { Footer } from "./Footer";
+import { HeadPage } from "./HeadPage";
 import { InputField } from "./InputField";
 import { InputPassword } from "./InputPassword";
 import { InputSearch } from "./InputSearch";
@@ -34,4 +35,5 @@ export {
   CardInformation,
   Loading,
   Error,
+  HeadPage,
 };

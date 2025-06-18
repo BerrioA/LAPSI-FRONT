@@ -8,7 +8,7 @@ import {
   useDisclosure,
 } from "@heroui/react";
 
-export default function App() {
+export const ModalCalendar = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
@@ -55,4 +55,4 @@ export default function App() {
       </Modal>
     </>
   );
-}
+};

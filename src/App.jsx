@@ -3,9 +3,11 @@ import { Dashboard, Home, NotFound, VerifyAccount } from "./pages";
 import {
   Calendar,
   LoginPage,
+  ModeratorsPage,
   RegisterPage,
   Reservations,
   Rooms,
+  StudentsPage,
 } from "./features";
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
         <Route path="/rooms" element={<Rooms />} />
         <Route path="/rooms/:idRoom" element={<Calendar />} />
         <Route path="/reservations" element={<Reservations />} />
+        <Route path="/moderators" element={<ModeratorsPage />} />
+        <Route path="/students" element={<StudentsPage />} />
         <Route path="/verify-account/:code" element={<VerifyAccount />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

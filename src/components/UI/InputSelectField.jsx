@@ -1,4 +1,4 @@
-import { Select, SelectItem } from "@heroui/react";
+import { Select, SelectItem } from "@nextui-org/react";
 
 export const InputSelect = ({
   label,
@@ -15,10 +15,7 @@ export const InputSelect = ({
       name={name}
       label={label}
       selectedKeys={value ? [value] : []}
-      onSelectionChange={(keys) => {
-        const selectedValue = Array.from(keys)[0];
-        onChange(selectedValue);
-      }}
+      onChange={(e) => onChange(e.target.value)}
       className={className}
       placeholder={placeholder}
       isRequired={isRequired}

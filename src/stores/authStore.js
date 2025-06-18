@@ -100,6 +100,25 @@ export const useAuthStore = create(
       }
     },
 
-    logout: () => set({}),
+    logout: async () => {
+      set({ loading: true, error: null });
+      console.log("Cerrar sesionn clickeado!");
+      try {
+        const response = await axios.post(`${BASE_URL}/auth/logout`, {
+          withCredentials: true,
+        });
+
+        set({ isLoggedIn: false, token: null, refreshToken: null });
+
+        return true;
+      } catch (err) {
+        set({
+          error: err.response?.data?.message,
+          isLoggedIn: true,
+          token: true,
+        });
+        return null;
+      }
+    },
   }))
 );

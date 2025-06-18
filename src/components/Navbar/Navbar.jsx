@@ -6,7 +6,7 @@ export const Navbar = () => {
     <div className="flex items-center h-14 px-4 justify-between bg-light-gray w-full">
       <div className="flex items-center gap-4">
         <ChevronBurger />
-        <InputSearch placeholder={"Buscar aquí..."} width={"280px"} />
+        <InputSearch placeholder={"Buscar aquí..."} />
       </div>
 
       <div className="flex items-center">

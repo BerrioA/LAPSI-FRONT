@@ -12,10 +12,14 @@ export const useFormFields = (initialState = {}, validate) => {
   }, []);
 
   const getFieldProps = useCallback(
-    (name) => ({
+    (name, customOnChange) => ({
       name,
       value: formData[name] || "",
-      onChange: (e) => setField(name, e.target.value),
+      onChange: customOnChange
+        ? (val) => {
+            setField(name, val);
+          }
+        : (e) => setField(name, e.target.value),
     }),
     [formData, setField]
   );
