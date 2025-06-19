@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 import { devtools } from "zustand/middleware";
+import { useProfileStore } from "./profileStore";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -28,6 +29,9 @@ export const useAuthStore = create(
         if (response.status !== 200) {
           throw new Error("Error al iniciar sesión");
         }
+
+        const chargeProfile = useProfileStore.getState().profile;
+        await chargeProfile();
 
         set({ token: response.data.token, isLoggedIn: true });
         return true;
@@ -104,11 +108,18 @@ export const useAuthStore = create(
       set({ loading: true, error: null });
       console.log("Cerrar sesionn clickeado!");
       try {
-        const response = await axios.post(`${BASE_URL}/auth/logout`, {
-          withCredentials: true,
-        });
+        const response = await axios.post(
+          `${BASE_URL}/auth/logout`,
+          {},
+          { withCredentials: true }
+        );
 
-        set({ isLoggedIn: false, token: null, refreshToken: null });
+        set({
+          loading: false,
+          isLoggedIn: false,
+          token: null,
+          refreshToken: null,
+        });
 
         return true;
       } catch (err) {

@@ -16,8 +16,6 @@ export const userStore = create(
       try {
         const res = await axios.get(`${BASE_URL}/users`);
         set({ users: res.data });
-
-        console.log(res.data);
       } catch (error) {
         let messageError =
           error.message.error || "Problema de red. Intenta más tarde.";

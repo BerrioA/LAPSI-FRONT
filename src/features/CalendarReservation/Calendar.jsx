@@ -1,15 +1,17 @@
 import moment from "moment";
 import { DashboardLayout } from "../../layouts";
 import { useParams } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useCalendarBlocks } from "../../hooks";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import { DayColumn, ThirdButton } from "./components";
+import { useGlobalStore } from "../../stores";
 
 const weekdays = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"];
 
 export const Calendar = () => {
   const { idRoom } = useParams();
+  const { getIdRoom } = useGlobalStore();
   const [selectedDuration, setSelectedDuration] = useState(null);
   const [currentDate] = useState(
     moment().startOf("isoWeek").format("YYYY-MM-DD")
@@ -19,6 +21,10 @@ export const Calendar = () => {
     currentDate,
     selectedDuration
   );
+
+  useEffect(() => {
+    getIdRoom(idRoom);
+  }, []);
 
   const blocksByDay = useMemo(() => {
     return weekdays.reduce((acc, day) => {

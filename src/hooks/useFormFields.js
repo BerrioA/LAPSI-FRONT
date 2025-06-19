@@ -50,12 +50,13 @@ export const useFormFields = (initialState = {}, validate) => {
   };
 
   return {
-    formData,
+    fields: formData, // 👈 Añade esto si prefieres usar "fields"
     setFormData,
     getFieldProps,
     handleSubmit,
     errors,
     isSubmitting,
     message,
+    formData,
   };
 };

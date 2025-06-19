@@ -451,8 +451,6 @@ const pruebasSociales = [
     label:
       "EEHSA Escala de evaluación de habilidades sociales para adolescentes (evalúa 6 factores de habilidades sociales: factor 1. Habilidades iniciales básicas <<HIB>> con 8 ítems; factor 2 Habilidades sociales para la comunicación <<HSC>> con 7 ítems; factor 3)",
   },
-  { key: "", label: "" },
-  { key: "", label: "" },
 ];
 
 const pruebasInteligencia = [
@@ -577,15 +575,19 @@ const pruebasGenerales = [
   { key: "", label: "BC. BATERIA PARA CONDCUTORES" },
 ];
 
-export {
-  typesOfActivities,
-  areasOfStudy,
-  pruebasClinicas,
-  pruebasNeuroPsicologicas,
-  pruebasProyectivas,
-  pruebasOrganizacionales,
-  pruebasEducativas,
-  pruebasSociales,
-  pruebasInteligencia,
-  pruebasGenerales,
+const pruebasPorArea = {
+  Social: pruebasSociales,
+  Inteligencia: pruebasInteligencia,
+  Generales: pruebasGenerales,
+  Clínica: pruebasClinicas,
+  Neuropsicológicas: pruebasNeuroPsicologicas,
+  Proyectivas: pruebasProyectivas,
+  Organizacional: pruebasOrganizacionales,
+  Educativa: pruebasEducativas,
 };
+
+const tiposDeDocumentos = [
+  { key: "CC", label: "Cédula de ciudadanía" },
+  { key: "TI", label: "Tarjeta de identidad" },
+];
+export { typesOfActivities, areasOfStudy, pruebasPorArea, tiposDeDocumentos };

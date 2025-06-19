@@ -7,6 +7,9 @@ import {
 } from "../../../components/UI";
 import { useFormFields } from "../../../hooks";
 import { useAuthStore } from "../../../stores";
+import { tiposDeDocumentos } from "../../../const/itemsInputSelect";
+import { useState } from "react";
+tiposDeDocumentos;
 
 const validateRegister = (values) => {
   const errors = {};
@@ -21,12 +24,13 @@ const validateRegister = (values) => {
 export const RegisterForm = () => {
   const navigate = useNavigate();
   const { register, loading, error } = useAuthStore();
+  const [type_document, setDocumentType] = useState("");
   const initialState = {
     name: "",
     middle_name: "",
     last_name: "",
     second_last_name: "",
-    document_type: "",
+    type_document: "",
     document_number: "",
     cellphone: "",
     email: "",
@@ -40,8 +44,7 @@ export const RegisterForm = () => {
   );
 
   const dateRegister = async (data) => {
-    const userRegister = await register(data);
-    console.log(userRegister);
+    const userRegister = await register({ ...data, type_document });
     if (userRegister) navigate("/login");
   };
 
@@ -113,11 +116,10 @@ export const RegisterForm = () => {
               <InputSelect
                 label="Tipo de documento"
                 name="type_document"
-                {...getFieldProps("type_document")}
-                options={[
-                  { key: "CC", label: "Cédula de ciudadanía" },
-                  { key: "TI", label: "Tarjeta de identidad" },
-                ]}
+                value={type_document}
+                onChange={setDocumentType}
+                options={tiposDeDocumentos}
+                placeholder="Tipo de documento"
               />
             </div>
             <div className="block">
@@ -134,7 +136,10 @@ export const RegisterForm = () => {
           <div className="grid xl:grid-cols-2 sm:grid-cols-1 gap-6">
             <div className="block">
               <p className="font-semibold mb-2 text-gray-700">Celular *</p>
-              <InputField label="Celular" {...getFieldProps("cellphone")} />
+              <InputField
+                label="Celular"
+                {...getFieldProps("cellphone")}
+              />
             </div>
 
             <div className="block">

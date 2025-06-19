@@ -1,12 +1,7 @@
-import { useEffect } from "react";
 import { useProfileStore } from "../../stores";
 
 export const UserProfile = () => {
-  const { name, last_name, email, profile } = useProfileStore();
-
-  useEffect(() => {
-    profile();
-  }, []);
+  const { name, last_name, email } = useProfileStore();
 
   return (
     <div className="flex w-[220px] items-center gap-4">
