@@ -121,6 +121,8 @@ export const useAuthStore = create(
           refreshToken: null,
         });
 
+        localStorage.removeItem("profile-storage");
+
         return true;
       } catch (err) {
         set({

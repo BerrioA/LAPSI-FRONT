@@ -82,6 +82,7 @@ export const useProfileStore = create(
         name: state.name,
         last_name: state.last_name,
         email: state.email,
+        role: state.role,
       }),
     }
   )
