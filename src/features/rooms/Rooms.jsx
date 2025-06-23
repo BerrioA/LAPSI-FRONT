@@ -15,11 +15,10 @@ export const Rooms = () => {
     <>
       <DashboardLayout>
         <HeadPage
-          page={"Salas"}
-          description={
-            "Pagina para la gestion de salas y solicitudes de reservas"
-          }
+          page="Salas"
+          description="Gestión centralizada de salas y administración de solicitudes de reserva en LAPSI."
         />
+
         {loading && <Loading />}
         {error && <Error textError={error} />}
         <div className="flex flex-col justify-center items-center">

@@ -4,19 +4,19 @@ export const UserProfile = () => {
   const { name, last_name, email } = useProfileStore();
 
   return (
-    <div className="flex w-[220px] items-center gap-4">
+    <div className="flex items-center gap-3 max-w-[220px] overflow-hidden">
       <img
         src="/student.webp"
         alt="Imagen perfil usuario"
-        className="w-9 h-9 bg-slate-400 rounded-xl"
+        className="w-9 h-9 rounded-xl object-cover"
       />
-      <div className="flex flex-col">
-        <p className="font-semibold text-secondary">
+      {/* Texto oculto en pantallas pequeñas */}
+      <div className="hidden sm:flex flex-col truncate">
+        <p className="font-semibold text-secondary truncate">
           {name} {last_name}
         </p>
-        <span className="text-sm text-gray-500">{email}</span>
+        <span className="text-sm text-gray-500 truncate">{email}</span>
       </div>
-      <div></div>
     </div>
   );
 };

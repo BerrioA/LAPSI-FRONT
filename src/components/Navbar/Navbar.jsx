@@ -1,18 +1,26 @@
 import { Chevron, ChevronBurger, InputSearch } from "../UI";
 import { UserProfile } from "../Navbar";
 
-export const Navbar = () => {
+export const Navbar = ({ setIsSidebarOpen }) => {
   return (
-    <div className="flex items-center h-14 px-4 justify-between bg-light-gray w-full">
+    <header className="w-full bg-light-gray px-4 h-14 flex items-center justify-between shadow-sm">
       <div className="flex items-center gap-4">
-        <ChevronBurger />
-        <InputSearch placeholder={"Buscar aquí..."} />
+        <button
+          onClick={() => setIsSidebarOpen((prev) => !prev)}
+          className="md:hidden"
+        >
+          <ChevronBurger />
+        </button>
+        <div className="hidden md:block">
+          <InputSearch placeholder="Buscar aquí..." />
+        </div>
       </div>
 
-      <div className="flex items-center">
+      <div className="flex items-center gap-2">
         <UserProfile />
         <Chevron />
       </div>
-    </div>
+    </header>
   );
 };
+

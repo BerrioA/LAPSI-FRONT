@@ -11,10 +11,7 @@ export const SidebarItemList = memo(() => {
   const items = ItemsDefault();
   const cerrarSesion = () => {
     const isLogout = logout();
-
-    if (isLogout) {
-      navigate("/");
-    }
+    if (isLogout) navigate("/");
   };
 
   return (
@@ -29,7 +26,12 @@ export const SidebarItemList = memo(() => {
           to={item.href}
         />
       ))}
-      <button onClick={() => cerrarSesion()}>Salir</button>
+      <button
+        onClick={cerrarSesion}
+        className="mt-4 text-left text-red-600"
+      >
+        Salir
+      </button>
     </ul>
   );
 });

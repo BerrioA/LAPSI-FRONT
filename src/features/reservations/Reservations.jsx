@@ -1,162 +1,44 @@
-import { useState } from "react";
-import { HeadPage } from "../../components";
+import { useEffect, useState } from "react";
+import { Error, HeadPage, Loading } from "../../components";
 import { DashboardLayout } from "../../layouts";
+
 import {
-  UserIcon,
   CalendarIcon,
   ClockIcon,
   BuildingOfficeIcon,
-  UsersIcon,
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@heroicons/react/24/outline";
-
-const reservas = [
-  // ⚠️ Tu array de reservas debe tener al menos 6–9 elementos para que se note la paginación
-  // Puedes duplicar los existentes si estás en pruebas.
-  // Aquí están 4 de ejemplo (agrega más si quieres probar varias páginas)
-  {
-    id: "1",
-    study_area: "Neuropsicológicas",
-    area_test: "ENI Evaluación neuropsicológica infantil",
-    user_quantity: 0,
-    partners: [],
-    activity_type: "Práctica de aplicación de prueba",
-    teachers_name: "Digna Mercedes Julio Calao",
-    bookingDate: "2025-06-19",
-    status: "finalizada",
-    duration: 0.75,
-    roomId: "Sala 1",
-    bookingTimeBlockId: "8:00 - 8:45 AM",
-    userId: "1",
-  },
-  {
-    id: "2",
-    study_area: "Clínicas",
-    area_test: "MMPI-2 Inventario Multifásico de Personalidad",
-    user_quantity: 2,
-    partners: ["Ana García", "Carlos López"],
-    activity_type: "Práctica supervisada",
-    teachers_name: "Dr. Roberto Mendoza",
-    bookingDate: "2025-06-20",
-    status: "confirmada",
-    duration: 1.5,
-    roomId: "Sala 2",
-    bookingTimeBlockId: "9:00 - 10:30 AM",
-    userId: "2",
-  },
-  {
-    id: "3",
-    study_area: "Educativas",
-    area_test: "WISC-V Escala de Inteligencia de Wechsler para Niños",
-    user_quantity: 1,
-    partners: ["María Rodríguez"],
-    activity_type: "Evaluación individual",
-    teachers_name: "Dra. Carmen Herrera",
-    bookingDate: "2025-06-21",
-    status: "pendiente",
-    duration: 2.0,
-    roomId: "Sala 3",
-    bookingTimeBlockId: "10:30 - 12:30 PM",
-    userId: "3",
-  },
-  {
-    id: "4",
-    study_area: "Forenses",
-    area_test: "Test de Simulación de Memoria - TOMM",
-    user_quantity: 2,
-    partners: ["Pedro Gómez", "Lucía Torres"],
-    activity_type: "Evaluación aplicada",
-    teachers_name: "Dr. Francisco Morales",
-    bookingDate: "2025-06-22",
-    status: "confirmada",
-    duration: 1.0,
-    roomId: "Sala 4",
-    bookingTimeBlockId: "13:00 - 14:00 PM",
-    userId: "4",
-  },
-  // agrega más reservas aquí si quieres probar varias páginas
-  {
-    id: "5",
-    study_area: "Neuropsicológicas",
-    area_test: "ENI Evaluación neuropsicológica infantil",
-    user_quantity: 0,
-    partners: [],
-    activity_type: "Práctica de aplicación de prueba",
-    teachers_name: "Digna Mercedes Julio Calao",
-    bookingDate: "2025-06-19",
-    status: "finalizada",
-    duration: 0.75,
-    roomId: "Sala 1",
-    bookingTimeBlockId: "8:00 - 8:45 AM",
-    userId: "1",
-  },
-  {
-    id: "6",
-    study_area: "Clínicas",
-    area_test: "MMPI-2 Inventario Multifásico de Personalidad",
-    user_quantity: 2,
-    partners: ["Ana García", "Carlos López"],
-    activity_type: "Práctica supervisada",
-    teachers_name: "Dr. Roberto Mendoza",
-    bookingDate: "2025-06-20",
-    status: "confirmada",
-    duration: 1.5,
-    roomId: "Sala 2",
-    bookingTimeBlockId: "9:00 - 10:30 AM",
-    userId: "2",
-  },
-  {
-    id: "7",
-    study_area: "Educativas",
-    area_test: "WISC-V Escala de Inteligencia de Wechsler para Niños",
-    user_quantity: 1,
-    partners: ["María Rodríguez"],
-    activity_type: "Evaluación individual",
-    teachers_name: "Dra. Carmen Herrera",
-    bookingDate: "2025-06-21",
-    status: "pendiente",
-    duration: 2.0,
-    roomId: "Sala 3",
-    bookingTimeBlockId: "10:30 - 12:30 PM",
-    userId: "3",
-  },
-  {
-    id: "8",
-    study_area: "Forenses",
-    area_test: "Test de Simulación de Memoria - TOMM",
-    user_quantity: 2,
-    partners: ["Pedro Gómez", "Lucía Torres"],
-    activity_type: "Evaluación aplicada",
-    teachers_name: "Dr. Francisco Morales",
-    bookingDate: "2025-06-22",
-    status: "confirmada",
-    duration: 1.0,
-    roomId: "Sala 4",
-    bookingTimeBlockId: "13:00 - 14:00 PM",
-    userId: "4",
-  },
-];
+import { useReservationStore } from "../../stores";
+import moment from "moment";
+import "moment/locale/es";
 
 const statusColors = {
-  confirmada: "bg-yellow-100 text-yellow-800",
-  finalizada: "bg-green-100 text-green-800",
+  confirmada: "bg-primary text-full-white",
+  finalizada: "bg-secondary text-full-white",
   pendiente: "bg-gray-100 text-gray-800",
   cancelada: "bg-red-100 text-red-800",
 };
 
 export const Reservations = () => {
+  moment.locale("es");
   const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const { loading, error, fetchReservations, reservations } =
+    useReservationStore();
+
+
 
   const itemsPerPage = 3;
 
-  const filtered = reservas.filter((r) => {
+  const filtered = reservations.filter((r) => {
     const docente = r.teachers_name.toLowerCase();
+    const users = r.user.name.toLowerCase();
     const estudiantes = r.partners.join(" ").toLowerCase();
     return (
       docente.includes(search.toLowerCase()) ||
+      users.includes(search.toLowerCase()) ||
       estudiantes.includes(search.toLowerCase())
     );
   });
@@ -179,14 +61,23 @@ export const Reservations = () => {
     setExpanded((prev) => (prev === id ? null : id));
   };
 
+  useEffect(() => {
+    fetchReservations();
+  }, []);
+
   return (
     <DashboardLayout>
       <HeadPage
-        page={"Reservas"}
-        description={"Página para la gestión de reservas"}
+        page="Reservas"
+        description="Sección para consultar y gestionar las reservas activas dentro del sistema LAPSI."
       />
 
-      <div className="p-4 space-y-6">
+      <div className="flex justify-center items-center">
+        {error && <Error textError={error} />}
+        {loading && <Loading />}
+      </div>
+
+      <div className="space-y-6">
         {/* Buscador */}
         <input
           type="text"
@@ -196,87 +87,139 @@ export const Reservations = () => {
             setSearch(e.target.value);
             setCurrentPage(1); // Reiniciar a la página 1 al buscar
           }}
-          className="border border-gray-300 rounded px-3 py-2 w-full max-w-md"
+          className="border border-gray-300 rounded-3xl px-3 py-2 w-full max-w-md"
         />
 
         {/* Cards */}
         <div className="grid grid-cols-1 gap-6">
-          {paginatedData.map((reserva) => {
+          {paginatedData.reverse().map((reserva) => {
             const isExpanded = expanded === reserva.id;
+            const formattedDuration =
+              reserva.duration <= 1
+                ? "1 hora"
+                : reserva.duration <= 2
+                ? "2 horas"
+                : `${Math.ceil(reserva.duration)} horas`;
+            const start = moment(
+              reserva.booking_time_block.start_time,
+              "HH:mm"
+            ).format("h:mm A");
+            const end = moment(
+              reserva.booking_time_block.end_time,
+              "HH:mm"
+            ).format("h:mm A");
+            const partnerNames = reserva.partners?.length
+              ? reserva.partners.map((p) => `${p.name} ${p.last_name}`)
+              : [];
+
             return (
               <div
                 key={reserva.id}
                 onClick={() => toggleExpand(reserva.id)}
-                className="border rounded-2xl shadow hover:shadow-lg transition-all duration-300 bg-white cursor-pointer"
+                className="border rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 bg-white cursor-pointer overflow-hidden"
               >
-                <div className="flex justify-between items-center px-4 py-3 bg-[#B29A64] text-white rounded-t-2xl">
-                  <span className="text-sm font-semibold">
+                {/* Encabezado */}
+                <div
+                  className={`flex justify-between items-center px-4 py-3 
+        ${statusColors[reserva.status] || "bg-gray-100 text-gray-800"} 
+        rounded-t-2xl`}
+                >
+                  <h3 className="font-semibold text-sm truncate uppercase">
                     {reserva.study_area}
-                  </span>
-                  <span
-                    className={`text-xs font-medium px-2 py-1 rounded-full ${
-                      statusColors[reserva.status] ||
-                      "bg-gray-100 text-gray-800"
-                    }`}
-                  >
+                  </h3>
+                  <span className="text-xs font-medium px-2 py-1 rounded-full capitalize">
                     {reserva.status}
                   </span>
                 </div>
 
-                <div className="flex flex-col md:flex-row justify-between gap-4 p-4">
-                  <div className="md:w-3/4 space-y-1">
-                    <p
-                      className={`font-semibold text-base ${
-                        isExpanded ? "whitespace-normal" : "truncate"
-                      } text-[#152E3A]`}
-                    >
+                {/* Contenido principal */}
+                <div className="flex flex-col md:flex-row justify-between gap-6 p-5 text-sm">
+                  {/* Columna izquierda */}
+                  <div className="flex-1 space-y-2 text-[#152E3A]">
+                    <h4 className="font-semibold text-base leading-snug">
                       {reserva.area_test}
+                    </h4>
+
+                    <p>
+                      <strong>Actividad:</strong> {reserva.activity_type}
                     </p>
 
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <UserIcon className="w-4 h-4 text-[#B29A64]" />
-                      <span className="truncate">{reserva.teachers_name}</span>
-                    </div>
+                    {reserva.other_activity && (
+                      <p>
+                        <strong>Otra actividad:</strong>{" "}
+                        {reserva.other_activity}
+                      </p>
+                    )}
 
-                    {reserva.partners.length > 0 && (
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        <UsersIcon className="w-4 h-4 text-[#B29A64]" />
-                        <span className="truncate">
-                          {reserva.partners.join(", ")}
-                        </span>
+                    <p>
+                      <strong>Docente:</strong> {reserva.teachers_name}
+                    </p>
+
+                    {partnerNames.length > 0 && (
+                      <div>
+                        <p className="font-medium mb-1">Acompañantes:</p>
+                        <div className="flex flex-wrap gap-2">
+                          {partnerNames.map((name, i) => (
+                            <span
+                              key={i}
+                              className="bg-[#F5F5F5] text-gray-700 text-xs px-3 py-1 rounded-full shadow-sm"
+                            >
+                              {name}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     )}
 
                     {isExpanded && (
-                      <div className="mt-2 text-sm text-gray-700 space-y-1">
+                      <>
+                        <hr className="my-2" />
                         <p>
-                          <strong>Actividad:</strong> {reserva.activity_type}
+                          <strong>Fecha de reserva:</strong>{" "}
+                          {moment(reserva.bookingDate)
+                            .locale("es")
+                            .format("LL")}
                         </p>
                         <p>
-                          <strong>Duración:</strong> {reserva.duration} horas
+                          <strong>Duración:</strong> {formattedDuration}
                         </p>
-                      </div>
+                        <p>
+                          <strong>Hora:</strong> {start} - {end}
+                        </p>
+                        <p>
+                          <strong>Sala:</strong> {reserva.room.room_name}
+                        </p>
+                        <p>
+                          <strong>Reserva realizada por:</strong>{" "}
+                          {reserva.user.name} {reserva.user.middle_name}{" "}
+                          {reserva.user.last_name}{" "}
+                          {reserva.user.second_last_name}
+                        </p>
+                      </>
                     )}
                   </div>
 
-                  <div className="md:w-1/4 text-sm text-gray-500 space-y-1 flex flex-col items-end justify-between">
+                  {/* Columna derecha */}
+                  <div className="min-w-[150px] flex flex-col items-end justify-between text-xs text-gray-500">
                     <div className="flex items-center gap-1">
                       <CalendarIcon className="w-4 h-4 text-[#B29A64]" />
-                      <span>{reserva.bookingDate}</span>
+                      <span>{moment(reserva.bookingDate).format("LL")}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <ClockIcon className="w-4 h-4 text-[#B29A64]" />
-                      <span>{reserva.bookingTimeBlockId}</span>
+                      <span>
+                        {start} - {end}
+                      </span>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 text-right">
                       <BuildingOfficeIcon className="w-4 h-4 text-[#B29A64]" />
-                      <span>{reserva.roomId}</span>
+                      <span>{reserva.room.room_name}</span>
                     </div>
-                    <div>
+                    <div className="mt-3">
                       {isExpanded ? (
-                        <ChevronUpIcon className="w-5 h-5 mt-2 text-gray-400" />
+                        <ChevronUpIcon className="w-5 h-5 text-gray-400" />
                       ) : (
-                        <ChevronDownIcon className="w-5 h-5 mt-2 text-gray-400" />
+                        <ChevronDownIcon className="w-5 h-5 text-gray-400" />
                       )}
                     </div>
                   </div>

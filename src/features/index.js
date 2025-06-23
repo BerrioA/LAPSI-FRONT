@@ -1,5 +1,6 @@
 import { LoginPage, RegisterPage } from "./auth";
 import { Calendar } from "./CalendarReservation/Calendar";
+import { Dashboard } from "./dashboard/Dashboard";
 import { Reservations } from "./reservations/Reservations";
 import { Rooms } from "./rooms";
 import { ModeratorsPage } from "./users/pages/ModeratorsPage";
@@ -13,4 +14,5 @@ export {
   Calendar,
   StudentsPage,
   ModeratorsPage,
+  Dashboard,
 };

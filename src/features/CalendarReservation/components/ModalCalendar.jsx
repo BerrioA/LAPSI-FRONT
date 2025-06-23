@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 export const ModalCalendar = ({ block }) => {
   const navigate = useNavigate();
   const { roomId } = useGlobalStore();
-  const { loading, error, reserve } = useReservationStore();
+  const { loading, error, postReservation } = useReservationStore();
 
   const [activity_type, setActivityType] = useState("");
   const [study_area, setStudyArea] = useState("");
@@ -88,13 +88,14 @@ export const ModalCalendar = ({ block }) => {
       }),
     };
 
-    const success = await reserve(data);
+    const success = await postReservation(data);
     // if (!success) {
     //   onOpenChange(false);
     // }
     if (success) {
       onOpenChange(false);
       navigate("/reservations");
+      // fecthReservations();
     }
   };
 

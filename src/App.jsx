@@ -1,13 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import {
-  Dashboard,
-  Home,
-  NotFound,
-  Unauthorized,
-  VerifyAccount,
-} from "./pages";
+import { Home, NotFound, Unauthorized, VerifyAccount } from "./pages";
 import {
   Calendar,
+  Dashboard,
   LoginPage,
   ModeratorsPage,
   RegisterPage,
@@ -15,6 +10,7 @@ import {
   Rooms,
   StudentsPage,
 } from "./features";
+
 import { PrivateRoute } from "./routes/PrivateRoute";
 
 function App() {

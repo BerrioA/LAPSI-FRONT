@@ -7,8 +7,8 @@ export const StudentsPage = () => {
     <>
       <DashboardLayout>
         <HeadPage
-          page={"Estudiantes"}
-          description={"Pagina para la gestion de estudiantes"}
+          page="Estudiantes"
+          description="Gestión de perfiles estudiantiles y administración de usuarios en el sistema LAPSI."
         />
         <StudentsTable />
       </DashboardLayout>
