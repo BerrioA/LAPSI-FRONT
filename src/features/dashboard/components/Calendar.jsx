@@ -4,7 +4,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 
 const daysOfWeek = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
 
-export const DateCalendar =() => {
+export const DateCalendar = () => {
   const [currentDate, setCurrentDate] = useState(moment());
 
   const startOfMonth = currentDate.clone().startOf("month").startOf("week");
@@ -72,4 +72,4 @@ export const DateCalendar =() => {
       </div>
     </div>
   );
-}
+};
