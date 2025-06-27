@@ -12,7 +12,12 @@ export const useProfileStore = create(
     (set) => ({
       uid: null,
       name: null,
+      middle_name: null,
       last_name: null,
+      second_last_name: null,
+      type_document: null,
+      document_number: null,
+      cellphone: null,
       role: null,
       email: null,
       isVerified: null,
@@ -40,7 +45,12 @@ export const useProfileStore = create(
           set({
             uid: response.data.uid,
             name: response.data.name,
+            middle_name: response.data.middle_name,
             last_name: response.data.last_name,
+            second_last_name: response.data.second_last_name,
+            type_document: response.data.type_document,
+            document_number: response.data.document_number,
+            cellphone: response.data.cellphone,
             role: response.data.role,
             email: response.data.email,
             isVerified: response.data.isVerified,
@@ -78,11 +88,16 @@ export const useProfileStore = create(
         removeItem: (name) => localStorage.removeItem(name),
       },
       partialize: (state) => ({
-        uid: state.uid,
         name: state.name,
+        middle_name: state.middle_name,
         last_name: state.last_name,
+        second_last_name: state.second_last_name,
+        type_document: state.type_document,
+        document_number: state.document_number,
+        cellphone: state.cellphone,
         email: state.email,
         role: state.role,
+        uid: state.uid,
       }),
     }
   )

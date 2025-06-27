@@ -28,8 +28,6 @@ export const Reservations = () => {
   const { loading, error, fetchReservations, reservations } =
     useReservationStore();
 
-
-
   const itemsPerPage = 3;
 
   const filtered = reservations.filter((r) => {
@@ -52,10 +50,7 @@ export const Reservations = () => {
     }
   };
 
-  const paginatedData = filtered.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const paginatedData = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const toggleExpand = (id) => {
     setExpanded((prev) => (prev === id ? null : id));
@@ -92,7 +87,8 @@ export const Reservations = () => {
 
         {/* Cards */}
         <div className="grid grid-cols-1 gap-6">
-          {paginatedData.reverse().map((reserva) => {
+          {paginatedData
+          .map((reserva) => {
             const isExpanded = expanded === reserva.id;
             const formattedDuration =
               reserva.duration <= 1

@@ -78,7 +78,7 @@ export const Charts = ({ data }) => {
   };
 
   return (
-    <div className="bg-full-white shadow-md rounded-2xl p-6 w-full">
+    <div className="bg-full shadow-md rounded-2xl p-4 w-full">
       <Bar
         data={chartData}
         options={options}

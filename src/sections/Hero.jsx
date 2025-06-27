@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { SecondaryButton, Text } from "../components/UI";
+import { SecondaryButton } from "../components/UI";
 
 export const Hero = () => {
   const navigate = useNavigate();
@@ -9,49 +9,42 @@ export const Hero = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-36 xl:py-15">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-        <div className="space-y-5 flex flex-col justify-center text-center md:text-left py-8 md:py-12 md:pr-8">
-          <h1 className="text-4xl xl:text-5xl font-bold text-secondary leading-snug">
-            Bienvenido a{" "}
-            <span className="bg-gradient-to-r  from-primary via-from-primary  to-secondary text-transparent bg-clip-text font-bold">
-              Lapsi
-            </span>
-            , tu plataforma para reservas de{" "}
-            <span className="bg-gradient-to-r from-primary via-from-primary  to-secondary text-transparent bg-clip-text font-bold">
-              Salas de Psicología
+    <section className="bg-off-white w-full min-h-screen px-4 flex items-center">
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
+        <div className="flex justify-center lg:justify-end order-1 lg:order-2">
+          <div className="relative w-[160px] sm:w-[200px] md:w-[260px] lg:w-[300px] xl:w-[460px]">
+            <img
+              src="/StudentGirl.png"
+              alt="Estudiante en laboratorio"
+              className="w-full object-cover rounded-3xl"
+              loading="lazy"
+            />
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary to-secondary opacity-10 blur-xl rounded-3xl z-[-1]" />
+          </div>
+        </div>
+
+        <div className="space-y-8 text-center lg:text-left order-2 lg:order-1">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold leading-tight text-secondary">
+            Plataforma de reservas para{" "}
+            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              salas de Psicología
             </span>
           </h1>
 
-          <Text>
-            El laboratorio de psicología de la Corporación universitaria del
-            Caribe es un espacio académico y de investigación que tiene como
-            propósito apoyar la formación integral de los estudiantes del
-            programa de psicología, así como fomentar la producción de
-            conocimiento a través de proyectos sociales, investigativos y de
-            intervención psicológica en contextos de vulnerabilidad. Este
-            laboratorio busca ser un referente en la región, promoviendo la
-            excelencia académica, la innovación y el impacto comunitario.
-          </Text>
+          <p className="text-gray-700 text-base sm:text-lg md:text-xl leading-relaxed max-w-xl mx-auto lg:mx-0">
+            Bienvenido a <strong>Lapsi</strong>, un espacio académico que apoya
+            la formación de estudiantes de psicología y fomenta proyectos de
+            impacto social, investigativo e innovador.
+          </p>
 
-          <div className="mt-12 md:mt-6 xl:w-[30%] sm:w-full">
+          <div className="flex justify-center lg:justify-start">
             <SecondaryButton
-              text={"Reservar ahora"}
-              type="button"
+              text="Reservar ahora"
               onClick={handleClick}
             />
           </div>
         </div>
-
-        {/* Imagen de la seccion del Hero */}
-        <div className="hidden md:flex justify-center items-center">
-          <img
-            src="/StudentGirl.png"
-            alt="Imagen Estudiante"
-            className="w-full max-w-md md:max-w-lg xl:max-w-xl object-contain"
-          />
-        </div>
       </div>
-    </div>
+    </section>
   );
 };

@@ -1,64 +1,58 @@
 import axios from "axios";
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { persist } from "zustand/middleware";
 import { useProfileStore } from "./profileStore";
+import { useReservationStore } from "./reservationStore";
+import { userStore } from "./userStore";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const useAuthStore = create(
-  devtools((set) => ({
-    token: null,
-    isLoggedIn: false,
-    loading: false,
-    error: null,
-    refreshToken: null,
+  persist(
+    (set) => ({
+      token: null,
+      isLoggedIn: false,
+      loading: false,
+      error: null,
+      refreshToken: null,
 
-    login: async ({ email, password }) => {
-      set({ loading: true, error: null });
+      login: async ({ email, password }) => {
+        set({ loading: true, error: null });
 
-      try {
-        const response = await axios.post(
-          `${BASE_URL}/auth/login`,
-          {
-            email,
-            password,
-          },
-          { withCredentials: true }
-        );
+        try {
+          const response = await axios.post(
+            `${BASE_URL}/auth/login`,
+            {
+              email,
+              password,
+            },
+            { withCredentials: true }
+          );
 
-        if (response.status !== 200) {
-          throw new Error("Error al iniciar sesión");
+          if (response.status !== 200) {
+            throw new Error("Error al iniciar sesión");
+          }
+
+          const chargeProfile = useProfileStore.getState().profile;
+          await chargeProfile();
+          const chargeReservations =
+            useReservationStore.getState().fetchReservations;
+          await chargeReservations();
+          const chargeUsers = userStore.getState().fetchUsers;
+          await chargeUsers();
+
+          set({ token: response.data.token, isLoggedIn: true });
+          return true;
+        } catch (err) {
+          set({ error: err.response?.data?.message });
+          return false;
+        } finally {
+          set({ loading: false });
         }
+      },
 
-        const chargeProfile = useProfileStore.getState().profile;
-        await chargeProfile();
-
-        set({ token: response.data.token, isLoggedIn: true });
-        return true;
-      } catch (err) {
-        set({ error: err.response?.data?.message });
-        return false;
-      } finally {
-        set({ loading: false });
-      }
-    },
-
-    register: async (data) => {
-      const {
-        name,
-        middle_name,
-        last_name,
-        second_last_name,
-        type_document,
-        document_number,
-        cellphone,
-        email,
-        password,
-      } = data;
-      set({ loading: true, error: null });
-
-      try {
-        const response = await axios.post(`${BASE_URL}/users`, {
+      register: async (data) => {
+        const {
           name,
           middle_name,
           last_name,
@@ -68,70 +62,91 @@ export const useAuthStore = create(
           cellphone,
           email,
           password,
-        });
+        } = data;
+        set({ loading: true, error: null });
 
-        if (response.status !== 201) {
-          throw new Error("Error al intentar relizar el registro");
+        try {
+          const response = await axios.post(`${BASE_URL}/users`, {
+            name,
+            middle_name,
+            last_name,
+            second_last_name,
+            type_document,
+            document_number,
+            cellphone,
+            email,
+            password,
+          });
+
+          if (response.status !== 201) {
+            throw new Error("Error al intentar realizar el registro");
+          }
+
+          return true;
+        } catch (err) {
+          set({ error: err.response?.data?.error });
+          return false;
+        } finally {
+          set({ loading: false });
         }
+      },
 
-        return true;
-      } catch (err) {
-        set({ error: err.response?.data?.error });
-        return false;
-      } finally {
-        set({ loading: false });
-      }
-    },
+      refreshAccessToken: async () => {
+        try {
+          const response = await axios.get(`${BASE_URL}/auth/refresh`, {
+            withCredentials: true,
+          });
 
-    refreshAccessToken: async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/auth/refresh`, {
-          withCredentials: true,
-        });
+          const { token } = response.data;
 
-        const { token } = response.data;
+          set({ token, isLoggedIn: true });
 
-        set({ token, isLoggedIn: true });
+          return token;
+        } catch (err) {
+          set({
+            error: err.response?.data?.message,
+            isLoggedIn: false,
+            token: null,
+          });
+          return null;
+        }
+      },
 
-        return token;
-      } catch (err) {
-        set({
-          error: err.response?.data?.message,
-          isLoggedIn: false,
-          token: null,
-        });
-        return null;
-      }
-    },
+      logout: async () => {
+        set({ loading: true, error: null });
+        console.log("Cerrar sesión clickeado!");
 
-    logout: async () => {
-      set({ loading: true, error: null });
-      console.log("Cerrar sesionn clickeado!");
-      try {
-        const response = await axios.post(
-          `${BASE_URL}/auth/logout`,
-          {},
-          { withCredentials: true }
-        );
+        try {
+          await axios.post(
+            `${BASE_URL}/auth/logout`,
+            {},
+            { withCredentials: true }
+          );
 
-        set({
-          loading: false,
-          isLoggedIn: false,
-          token: null,
-          refreshToken: null,
-        });
+          set({
+            loading: false,
+            isLoggedIn: false,
+            token: null,
+            refreshToken: null,
+          });
 
-        localStorage.removeItem("profile-storage");
+          localStorage.removeItem("profile-storage");
+          localStorage.removeItem("session-user");
 
-        return true;
-      } catch (err) {
-        set({
-          error: err.response?.data?.message,
-          isLoggedIn: true,
-          token: true,
-        });
-        return null;
-      }
-    },
-  }))
+          return true;
+        } catch (err) {
+          set({
+            error: err.response?.data?.message,
+            isLoggedIn: true,
+            token: true,
+          });
+          return null;
+        }
+      },
+    }),
+    {
+      name: "session-user",
+      partialize: (state) => ({ isLoggedIn: state.isLoggedIn }),
+    }
+  )
 );

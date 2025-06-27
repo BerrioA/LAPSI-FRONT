@@ -1,25 +1,39 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Home, NotFound, Unauthorized, VerifyAccount } from "./pages";
 import {
   Calendar,
+  ChangePassword,
   Dashboard,
   LoginPage,
   ModeratorsPage,
+  Profile,
   RegisterPage,
   Reservations,
   Rooms,
+  Settings,
   StudentsPage,
 } from "./features";
 
 import { PrivateRoute } from "./routes/PrivateRoute";
+import { useAuthStore } from "./stores";
 
 function App() {
+  const { isLoggedIn } = useAuthStore();
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/"
-          element={<Home />}
+          element={
+            isLoggedIn ? (
+              <Navigate
+                to="/dashboard"
+                replace
+              />
+            ) : (
+              <Home />
+            )
+          }
         />
         <Route
           path="/login"
@@ -32,7 +46,16 @@ function App() {
 
         <Route
           path="/register"
-          element={<RegisterPage />}
+          element={
+            isLoggedIn ? (
+              <Navigate
+                to="/dashboard"
+                replace
+              />
+            ) : (
+              <RegisterPage />
+            )
+          }
         />
 
         <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
@@ -53,18 +76,34 @@ function App() {
             path="/dashboard"
             element={<Dashboard />}
           />
+          {/* aalalal */}
           <Route
             path="/rooms"
             element={<Rooms />}
-          />
-          <Route
-            path="/rooms/:idRoom"
-            element={<Calendar />}
-          />
+          >
+            <Route
+              path=":idRoom"
+              element={<Calendar />}
+            />
+          </Route>
+          {/* aalalal */}
           <Route
             path="/reservations"
             element={<Reservations />}
           />
+          <Route
+            path="settings"
+            element={<Settings />}
+          >
+            <Route
+              path="profile"
+              element={<Profile />}
+            />
+            <Route
+              path="change-password"
+              element={<ChangePassword />}
+            />
+          </Route>
         </Route>
 
         <Route

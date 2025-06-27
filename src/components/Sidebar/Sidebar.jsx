@@ -6,7 +6,7 @@ export const Sidebar = ({ isOpen, setIsOpen }) => {
     <>
       <div
         className={clsx(
-          "bg-off-white h-screen w-72 fixed md:static top-0 left-0 z-40 transition-transform duration-300",
+          "bg-light-gray h-screen w-72 fixed md:static top-0 left-0 z-40 transition-transform duration-300",
           {
             "-translate-x-full md:translate-x-0": !isOpen,
             "translate-x-0": isOpen,

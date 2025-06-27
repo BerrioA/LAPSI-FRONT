@@ -30,14 +30,14 @@ export const Footer = () => {
               <div className="space-y-1">
                 <p>
                   <a
-                    to="tel:+573145248816"
+                    href="tel:+573145248816"
                     className="hover:text-white transition-colors duration-200"
                   >
                     3145248816
                   </a>
                   {" - "}
                   <a
-                    to="tel:+573167410103"
+                    href="tel:+573167410103"
                     className="hover:text-white transition-colors duration-200"
                   >
                     3167410103
@@ -46,7 +46,7 @@ export const Footer = () => {
                 <p>
                   PBX:{" "}
                   <a
-                    to="tel:+6052798900"
+                    href="tel:+6052798900"
                     className="hover:text-white transition-colors duration-200"
                   >
                     +60(5) 2798900
@@ -54,7 +54,7 @@ export const Footer = () => {
                 </p>
                 <p>
                   <a
-                    to="mailto:archivocentral@cecar.edu.co"
+                    href="mailto:archivocentral@cecar.edu.co"
                     className="hover:text-white transition-colors duration-200"
                   >
                     archivocentral@cecar.edu.co
@@ -71,7 +71,7 @@ export const Footer = () => {
               <ul className="space-y-2 text-gray-300 text-sm">
                 <li>
                   <a
-                    to="#"
+                    href="#"
                     className="hover:text-white transition-colors duration-200"
                   >
                     Acerca de Nosotros
@@ -79,7 +79,7 @@ export const Footer = () => {
                 </li>
                 <li>
                   <a
-                    to="#"
+                    href="#"
                     className="hover:text-white transition-colors duration-200"
                   >
                     Servicios
@@ -87,7 +87,7 @@ export const Footer = () => {
                 </li>
                 <li>
                   <a
-                    to="#"
+                    href="#"
                     className="hover:text-white transition-colors duration-200"
                   >
                     Recursos
@@ -95,7 +95,7 @@ export const Footer = () => {
                 </li>
                 <li>
                   <a
-                    to="#"
+                    href="#"
                     className="hover:text-white transition-colors duration-200"
                   >
                     Soporte
@@ -105,45 +105,42 @@ export const Footer = () => {
             </nav>
           </div>
 
-          {/* Información Legal */}
+          {/* Coordinadores */}
           <div className="space-y-4">
-            <h3 className="text-white text-lg font-semibold">Legal</h3>
-            <nav className="space-y-2">
-              <ul className="space-y-2 text-gray-300 text-sm">
-                <li>
+            <h3 className="text-white text-lg font-semibold">Coordinadores</h3>
+            <div className="text-gray-300 text-sm space-y-3">
+              <div>
+                <p className="font-semibold text-white">
+                  Cesar Tulio Argumedo de la Ossa
+                </p>
+                <p>Magíster en Psicología</p>
+                <p>Coordinador área de procesos cognitivos</p>
+                <p>
                   <a
-                    to="#"
+                    href="mailto:cesar.argumedo@cecar.edu.co"
                     className="hover:text-white transition-colors duration-200"
                   >
-                    Política de Privacidad
+                    cesar.argumedo@cecar.edu.co
                   </a>
-                </li>
-                <li>
+                </p>
+              </div>
+              <div>
+                <p className="font-semibold text-white">
+                  Lisbeth Margarita Hoyos Córdoba
+                </p>
+                <p>PhD(c) en Neurociencia Cognitiva Aplicada</p>
+                <p>Magíster en Trastornos Cognoscitivos y del Aprendizaje</p>
+                <p>Coordinadora laboratorio de psicología</p>
+                <p>
                   <a
-                    to="#"
+                    href="mailto:lisbeth.hoyosc@cecar.edu.co"
                     className="hover:text-white transition-colors duration-200"
                   >
-                    Términos de Uso
+                    lisbeth.hoyosc@cecar.edu.co
                   </a>
-                </li>
-                <li>
-                  <a
-                    to="#"
-                    className="hover:text-white transition-colors duration-200"
-                  >
-                    Cookies
-                  </a>
-                </li>
-                <li>
-                  <a
-                    to="#"
-                    className="hover:text-white transition-colors duration-200"
-                  >
-                    Contacto Legal
-                  </a>
-                </li>
-              </ul>
-            </nav>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 

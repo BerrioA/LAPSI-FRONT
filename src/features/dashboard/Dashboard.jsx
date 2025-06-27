@@ -1,5 +1,6 @@
 import { HeadPage } from "../../components";
 import { DashboardLayout } from "../../layouts";
+import { useReservationStore, userStore } from "../../stores";
 import { DateCalendar } from "./components/Calendar";
 import { Charts } from "./components/Charts";
 import {
@@ -22,6 +23,8 @@ const StatCard = ({ icon: Icon, title, value }) => (
 );
 
 export const Dashboard = () => {
+  const { users } = userStore();
+  const { reservations } = useReservationStore();
   const data = [
     { mes: "Enero", reservas: 10 },
     { mes: "Febrero", reservas: 18 },
@@ -39,18 +42,18 @@ export const Dashboard = () => {
         description="Panel principal de control para visualizar y gestionar eficientemente las reservas dentro del sistema LAPSI."
       />
 
-      <div className=" space-y-6">
+      <div className="space-y-4">
         {/* Top stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
             icon={UserGroupIcon}
             title="Total Estudiantes"
-            value="38"
+            value={users.length}
           />
           <StatCard
             icon={ClipboardDocumentListIcon}
             title="Reservas Totales"
-            value="102"
+            value={reservations.length}
           />
           <StatCard
             icon={CalendarDaysIcon}
@@ -65,17 +68,14 @@ export const Dashboard = () => {
         </div>
 
         {/* Gráfica y calendario */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-full-white rounded-2xl shadow p-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2 bg-full-white rounded-2xl shadow">
             <h2 className="text-xl font-semibold text-secondary mb-4 text-center">
               Reservas por mes
             </h2>
             <Charts data={data} />
           </div>
-          <div className="bg-full-white rounded-2xl shadow p-5">
-            <h2 className="text-xl font-semibold text-secondary mb-4 text-center">
-              Calendario
-            </h2>
+          <div className="">
             <DateCalendar />
           </div>
         </div>

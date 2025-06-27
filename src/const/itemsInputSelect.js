@@ -572,7 +572,10 @@ const pruebasGenerales = [
     label:
       "MABC-2 Batería de evaluación del movimiento para niños- 2 –(evalúa el movimiento para niños y su desarrollo psicomotor)",
   },
-  { key: "", label: "BC. BATERIA PARA CONDCUTORES" },
+  {
+    key: "BC. BATERIA PARA CONDCUTORES",
+    label: "BC. BATERIA PARA CONDCUTORES",
+  },
 ];
 
 const pruebasPorArea = {

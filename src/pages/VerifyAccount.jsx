@@ -7,11 +7,10 @@ const VerifyAccount = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState("Verificando...");
   const [success, setSuccess] = useState(null);
-
+  const encodedCode = encodeURIComponent(code);
   useEffect(() => {
     const verifyCode = async () => {
       try {
-        const encodedCode = encodeURIComponent(code);
         const response = await axios.patch(
           `http://localhost:3000/api/lapsi/v1/users/verify-account/${encodedCode}`
         );
@@ -19,10 +18,7 @@ const VerifyAccount = () => {
         console.log(response.data);
         setStatus("Cuenta verificada con éxito. Redirigiendo al login...");
         setSuccess(true);
-
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 3000);
+        navigate("/dashboard");
       } catch (error) {
         setStatus(error.response.error);
         console.error(error.response.error);
@@ -30,8 +26,8 @@ const VerifyAccount = () => {
       }
     };
 
-    if (code) verifyCode();
-  }, [code, navigate]);
+    verifyCode();
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100 px-4">
