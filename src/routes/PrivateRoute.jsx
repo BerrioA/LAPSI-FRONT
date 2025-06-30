@@ -3,7 +3,6 @@ import { useProfileStore } from "../stores";
 
 export const PrivateRoute = ({ allowedRoles }) => {
   const { role, uid } = useProfileStore();
-  console.log(role);
   if (!uid) {
     return (
       <Navigate

@@ -1,10 +1,7 @@
-import axios from "axios";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { useAuthStore } from "./authStore";
 import { useProfileStore } from "./profileStore";
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import { axiosInstance } from "../api/axiosInstance";
 
 export const useReservationStore = create(
   devtools((set) => ({
@@ -13,35 +10,11 @@ export const useReservationStore = create(
     message: null,
     reservations: [],
 
-    getValidToken: async () => {
-      const { token, refreshAccessToken } = useAuthStore.getState();
-      let currentToken = token;
-
-      if (!currentToken) {
-        currentToken = await refreshAccessToken();
-        if (!currentToken) {
-          console.warn("No se pudo obtener un token válido.");
-          throw new Error("Problema de red. Intenta más tarde.");
-        }
-      }
-
-      return currentToken;
-    },
-
     postReservation: async (reservationData) => {
       set({ loading: true, error: null, message: null });
 
       try {
-        const token = await useReservationStore.getState().getValidToken();
-        if (!token) return false;
-
-        const response = await axios.post(
-          `${BASE_URL}/bookings`,
-          reservationData,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await axiosInstance.post(`/bookings`, reservationData);
 
         if (response.status !== 201) {
           throw new Error("Error al intentar realizar la reserva");
@@ -65,9 +38,6 @@ export const useReservationStore = create(
       set({ loading: true, error: null });
 
       try {
-        const token = await useReservationStore.getState().getValidToken();
-        if (!token) return;
-
         const { role } = useProfileStore.getState();
         let endpoint = "";
 
@@ -82,13 +52,13 @@ export const useReservationStore = create(
             throw new Error("Rol de usuario no soportado");
         }
 
-        const response = await axios.get(`${BASE_URL}${endpoint}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axiosInstance.get(`${endpoint}`);
 
         set({ reservations: response.data, error: null });
       } catch (err) {
-        set({ error: err.response?.data?.error || "Error desconocido" });
+        set({
+          error: err.response.data.message || "No se pudo cargar las reservas.",
+        });
       } finally {
         set({ loading: false });
       }

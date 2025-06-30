@@ -2,7 +2,6 @@ import axios from "axios";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { useProfileStore } from "./profileStore";
-import { useReservationStore } from "./reservationStore";
 import { userStore } from "./userStore";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
@@ -15,6 +14,7 @@ export const useAuthStore = create(
       loading: false,
       error: null,
       refreshToken: null,
+      initialized: false,
 
       login: async ({ email, password }) => {
         set({ loading: true, error: null });
@@ -35,9 +35,6 @@ export const useAuthStore = create(
 
           const chargeProfile = useProfileStore.getState().profile;
           await chargeProfile();
-          const chargeReservations =
-            useReservationStore.getState().fetchReservations;
-          await chargeReservations();
           const chargeUsers = userStore.getState().fetchUsers;
           await chargeUsers();
 
@@ -99,7 +96,7 @@ export const useAuthStore = create(
 
           const { token } = response.data;
 
-          set({ token, isLoggedIn: true });
+          set({ token, isLoggedIn: true, initialized: true });
 
           return token;
         } catch (err) {
@@ -107,6 +104,7 @@ export const useAuthStore = create(
             error: err.response?.data?.message,
             isLoggedIn: false,
             token: null,
+            initialized: true,
           });
           return null;
         }
@@ -114,7 +112,6 @@ export const useAuthStore = create(
 
       logout: async () => {
         set({ loading: true, error: null });
-        console.log("Cerrar sesión clickeado!");
 
         try {
           await axios.post(
@@ -146,7 +143,9 @@ export const useAuthStore = create(
     }),
     {
       name: "session-user",
-      partialize: (state) => ({ isLoggedIn: state.isLoggedIn }),
+      partialize: (state) => ({
+        isLoggedIn: state.isLoggedIn,
+      }),
     }
   )
 );

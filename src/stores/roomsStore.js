@@ -1,8 +1,6 @@
-import axios from "axios";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-
-const BASE_URL = import.meta.env.VITE_API_URL;
+import { axiosInstance } from "../api/axiosInstance";
 
 export const useRoomsStore = create(
   devtools((set) => ({
@@ -13,7 +11,7 @@ export const useRoomsStore = create(
     fetchRooms: async () => {
       set({ loading: true, error: null });
       try {
-        const res = await axios.get(`${BASE_URL}/rooms`);
+        const res = await axiosInstance.get(`/rooms`);
         set({ rooms: res.data });
       } catch (error) {
         let messageError =

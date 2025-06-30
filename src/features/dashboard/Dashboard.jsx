@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { HeadPage } from "../../components";
 import { DashboardLayout } from "../../layouts";
-import { useReservationStore, userStore } from "../../stores";
+import { useAuthStore, useReservationStore, userStore } from "../../stores";
 import { DateCalendar } from "./components/Calendar";
 import { Charts } from "./components/Charts";
 import {
@@ -35,6 +36,13 @@ export const Dashboard = () => {
     { mes: "Julio", reservas: 8 },
   ];
 
+  const { refreshAccessToken } = useAuthStore();
+  const initialized = useAuthStore((state) => state.initialized);
+  useEffect(() => {
+    refreshAccessToken();
+  }, []);
+
+  if (!initialized) return null;
   return (
     <DashboardLayout>
       <HeadPage

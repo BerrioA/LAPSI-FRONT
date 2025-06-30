@@ -1,10 +1,9 @@
-import axios from "axios";
 import { useAuthStore } from "./authStore";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import CryptoJS from "crypto-js";
+import { axiosInstance } from "../api/axiosInstance";
 
-const BASE_URL = import.meta.env.VITE_API_URL;
 const SECRET_KEY = import.meta.env.VITE_SECRET_KEY;
 
 export const useProfileStore = create(
@@ -36,11 +35,7 @@ export const useProfileStore = create(
         }
 
         try {
-          const response = await axios.get(`${BASE_URL}/auth/profile`, {
-            headers: {
-              Authorization: `Bearer ${currentToken}`,
-            },
-          });
+          const response = await axiosInstance.get(`/auth/profile`);
 
           set({
             uid: response.data.uid,

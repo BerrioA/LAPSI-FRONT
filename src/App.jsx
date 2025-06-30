@@ -19,6 +19,7 @@ import { useAuthStore } from "./stores";
 
 function App() {
   const { isLoggedIn } = useAuthStore();
+
   return (
     <BrowserRouter>
       <Routes>
