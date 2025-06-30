@@ -1,7 +1,6 @@
-import { useEffect } from "react";
 import { HeadPage } from "../../components";
 import { DashboardLayout } from "../../layouts";
-import { useAuthStore, useReservationStore, userStore } from "../../stores";
+import { useReservationStore, userStore } from "../../stores";
 import { DateCalendar } from "./components/Calendar";
 import { Charts } from "./components/Charts";
 import {

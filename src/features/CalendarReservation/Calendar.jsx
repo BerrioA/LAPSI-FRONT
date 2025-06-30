@@ -139,11 +139,11 @@ export const Calendar = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 px-4">
-            {daysWithDates.map(({ day, dateFormatted }) => (
+            {daysWithDates.map(({ day, iso }) => (
               <DayColumn
                 key={day}
                 day={day}
-                date={dateFormatted}
+                date={iso} // ✅ usa la fecha ISO real, ej: "2025-07-02"
                 blocks={blocksByDay[day] || []}
               />
             ))}

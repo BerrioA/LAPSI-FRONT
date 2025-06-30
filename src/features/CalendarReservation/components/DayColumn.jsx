@@ -3,19 +3,19 @@ import { ModalCalendar } from "./ModalCalendar";
 import moment from "moment";
 
 export const DayColumn = memo(({ day, date, blocks }) => {
-  const formattedDate = moment(date, "DD/MM/YYYY").format("YYYY-MM-DD");
-
   return (
     <div className="bg-light-gray p-3 rounded-xl shadow-md min-h-[200px]">
       <h3 className="text-center font-bold text-secondary mb-1">{day}</h3>
-      <p className="text-center text-sm text-gray-500 mb-3">{date}</p>
+      <p className="text-center text-sm text-gray-500 mb-3">
+        {moment(date).format("DD [de] MMMM")}
+      </p>
 
       {blocks.length > 0 ? (
         blocks.map((block) => (
           <ModalCalendar
             key={block.block_id}
             block={block}
-            date={formattedDate}
+            date={date} // ✅ ahora sí es "2025-07-02"
           />
         ))
       ) : (

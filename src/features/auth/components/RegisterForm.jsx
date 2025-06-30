@@ -82,6 +82,7 @@ export const RegisterForm = () => {
               <InputField
                 label="Segundo nombre"
                 {...getFieldProps("middle_name")}
+                required={false}
               />
             </div>
           </div>
