@@ -36,13 +36,6 @@ export const Dashboard = () => {
     { mes: "Julio", reservas: 8 },
   ];
 
-  const { refreshAccessToken } = useAuthStore();
-  const initialized = useAuthStore((state) => state.initialized);
-  useEffect(() => {
-    refreshAccessToken();
-  }, []);
-
-  if (!initialized) return null;
   return (
     <DashboardLayout>
       <HeadPage

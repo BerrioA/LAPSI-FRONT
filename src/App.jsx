@@ -16,106 +16,109 @@ import {
 
 import { PrivateRoute } from "./routes/PrivateRoute";
 import { useAuthStore } from "./stores";
+import { SessionInitializer } from "./routes/SessionInitializer";
 
 function App() {
   const { isLoggedIn } = useAuthStore();
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            isLoggedIn ? (
-              <Navigate
-                to="/dashboard"
-                replace
-              />
-            ) : (
-              <Home />
-            )
-          }
-        />
-        <Route
-          path="/login"
-          element={<LoginPage />}
-        />
-        <Route
-          path="/unauthorized"
-          element={<Unauthorized />}
-        />
-
-        <Route
-          path="/register"
-          element={
-            isLoggedIn ? (
-              <Navigate
-                to="/dashboard"
-                replace
-              />
-            ) : (
-              <RegisterPage />
-            )
-          }
-        />
-
-        <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
+      <SessionInitializer>
+        <Routes>
           <Route
-            path="/moderators"
-            element={<ModeratorsPage />}
+            path="/"
+            element={
+              isLoggedIn ? (
+                <Navigate
+                  to="/dashboard"
+                  replace
+                />
+              ) : (
+                <Home />
+              )
+            }
           />
           <Route
-            path="/students"
-            element={<StudentsPage />}
+            path="/login"
+            element={<LoginPage />}
           />
-        </Route>
+          <Route
+            path="/unauthorized"
+            element={<Unauthorized />}
+          />
 
-        <Route
-          element={<PrivateRoute allowedRoles={["Admin", "Estudiante"]} />}
-        >
           <Route
-            path="/dashboard"
-            element={<Dashboard />}
+            path="/register"
+            element={
+              isLoggedIn ? (
+                <Navigate
+                  to="/dashboard"
+                  replace
+                />
+              ) : (
+                <RegisterPage />
+              )
+            }
           />
-          {/* aalalal */}
-          <Route
-            path="/rooms"
-            element={<Rooms />}
-          >
+
+          <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
             <Route
-              path=":idRoom"
-              element={<Calendar />}
+              path="/moderators"
+              element={<ModeratorsPage />}
+            />
+            <Route
+              path="/students"
+              element={<StudentsPage />}
             />
           </Route>
-          {/* aalalal */}
+
           <Route
-            path="/reservations"
-            element={<Reservations />}
-          />
-          <Route
-            path="settings"
-            element={<Settings />}
+            element={<PrivateRoute allowedRoles={["Admin", "Estudiante"]} />}
           >
             <Route
-              path="profile"
-              element={<Profile />}
+              path="/dashboard"
+              element={<Dashboard />}
+            />
+            {/* aalalal */}
+            <Route
+              path="/rooms"
+              element={<Rooms />}
+            >
+              <Route
+                path=":idRoom"
+                element={<Calendar />}
+              />
+            </Route>
+            {/* aalalal */}
+            <Route
+              path="/reservations"
+              element={<Reservations />}
             />
             <Route
-              path="change-password"
-              element={<ChangePassword />}
-            />
+              path="settings"
+              element={<Settings />}
+            >
+              <Route
+                path="profile"
+                element={<Profile />}
+              />
+              <Route
+                path="change-password"
+                element={<ChangePassword />}
+              />
+            </Route>
           </Route>
-        </Route>
 
-        <Route
-          path="/verify-account/:code"
-          element={<VerifyAccount />}
-        />
-        <Route
-          path="*"
-          element={<NotFound />}
-        />
-      </Routes>
+          <Route
+            path="/verify-account/:code"
+            element={<VerifyAccount />}
+          />
+          <Route
+            path="*"
+            element={<NotFound />}
+          />
+        </Routes>
+      </SessionInitializer>
     </BrowserRouter>
   );
 }
