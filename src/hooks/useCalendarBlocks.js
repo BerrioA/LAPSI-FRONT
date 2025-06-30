@@ -10,7 +10,7 @@ export const useCalendarBlocks = (roomId, currentDate, selectedDuration) => {
     try {
       const { data } = await axios.get(
         `http://localhost:3000/api/lapsi/v1/rooms/${roomId}`,
-        { params: { date: currentDate } }
+        { params: { date: currentDate.toISOString() } }
       );
       setAllBlocks(data);
     } catch (error) {
@@ -48,4 +48,3 @@ export const useCalendarBlocks = (roomId, currentDate, selectedDuration) => {
 
   return { filteredBlocks };
 };
-

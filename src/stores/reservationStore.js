@@ -21,6 +21,7 @@ export const useReservationStore = create(
         }
 
         set({ message: response.data.message });
+        return true;
       } catch (err) {
         console.log(err);
         let messageError =
@@ -29,6 +30,7 @@ export const useReservationStore = create(
         set({
           error: messageError,
         });
+        return false;
       } finally {
         set({ loading: false });
       }

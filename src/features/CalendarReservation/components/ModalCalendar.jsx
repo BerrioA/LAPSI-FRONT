@@ -7,95 +7,66 @@ import {
   Button,
   useDisclosure,
 } from "@heroui/react";
-import moment from "moment";
-import { InputField, InputSelect } from "../../../components";
-import { useFormFields } from "../../../hooks";
 import { useEffect, useState } from "react";
+import { InputField, InputSelect } from "../../../components";
+import { useGlobalStore, useReservationStore } from "../../../stores";
 import {
   areasOfStudy,
   typesOfActivities,
   pruebasPorArea,
 } from "../../../const/itemsInputSelect";
-import { useGlobalStore, useReservationStore } from "../../../stores";
 import { useNavigate } from "react-router-dom";
+import { Formik, Form } from "formik";
+import moment from "moment";
 
-export const ModalCalendar = ({ block }) => {
+export const ModalCalendar = ({ block, date }) => {
   const navigate = useNavigate();
   const { roomId } = useGlobalStore();
   const { loading, error, postReservation } = useReservationStore();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const [activity_type, setActivityType] = useState("");
-  const [study_area, setStudyArea] = useState("");
-  const [area_test, setAreaTest] = useState("");
   const [areaTestOptions, setAreaTestOptions] = useState([]);
-  const [user_quantity, setUserQuantity] = useState(0);
-  const [partners, setPartners] = useState([]);
 
-  const initialState = {
+  const initialValues = {
+    activity_type: "",
     other_activity: "",
+    study_area: "",
+    area_test: "",
+    user_quantity: 0,
+    partners: [],
     teachers_name: "",
   };
 
-  const { getFieldProps, fields } = useFormFields(initialState);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-  useEffect(() => {
-    if (study_area) {
-      setAreaTestOptions(pruebasPorArea[study_area] || []);
-      setAreaTest("");
-    } else {
-      setAreaTestOptions([]);
-      setAreaTest("");
-    }
-  }, [study_area]);
-
-  const handleUserQuantityChange = (e) => {
-    const quantity = Math.min(4, parseInt(e.target.value) || 0);
-    setUserQuantity(quantity);
-
-    const updatedPartners = [...partners];
-    while (updatedPartners.length < quantity) {
-      updatedPartners.push({ name: "", last_name: "" });
-    }
-    while (updatedPartners.length > quantity) {
-      updatedPartners.pop();
-    }
-    setPartners(updatedPartners);
-  };
-
-  const handlePartnerChange = (index, field, value) => {
-    const updatedPartners = [...partners];
-    updatedPartners[index][field] = value;
-    setPartners(updatedPartners);
-  };
-
-  const handleReservation = async () => {
-    const bookingDate = moment(block.date).format("YYYY-MM-DD");
+  // En tu handleReservation del componente ModalCalendar
+  const handleReservation = async (values) => {
+    const bookingDate = moment(date).format("YYYY-MM-DD");
     const bookingTimeBlockId = block.block_id;
 
+    // Filtrar y validar partners
+    const partners = values.partners.map((p) => ({
+      name: p.name.trim(),
+      last_name: p.last_name.trim(),
+    }));
+
     const data = {
-      activity_type,
-      study_area,
-      area_test,
-      user_quantity,
-      partners,
-      teachers_name: fields.teachers_name,
+      activity_type: values.activity_type,
+      study_area: values.study_area,
+      area_test: values.area_test,
+      user_quantity: partners.length + 1,
+      teachers_name: values.teachers_name,
       bookingDate,
       roomId,
+      partners,
       bookingTimeBlockId,
-      ...(activity_type === "Otro" && {
-        other_activity: fields.other_activity,
+      ...(values.activity_type === "Otro" && {
+        other_activity: values.other_activity,
       }),
     };
 
     const success = await postReservation(data);
-    // if (!success) {
-    //   onOpenChange(false);
-    // }
     if (success) {
       onOpenChange(false);
       navigate("/reservations");
-      // fecthReservations();
     }
   };
 
@@ -133,97 +104,154 @@ export const ModalCalendar = ({ block }) => {
                 </ModalBody>
               )}
 
-              <ModalBody>
-                <InputSelect
-                  label="Tipo de actividad"
-                  name="activity_type"
-                  value={activity_type}
-                  onChange={setActivityType}
-                  options={typesOfActivities}
-                  placeholder="Selecciona un tipo de actividad"
-                />
+              <Formik
+                initialValues={initialValues}
+                onSubmit={handleReservation}
+              >
+                {({ values, handleChange, setFieldValue }) => {
+                  useEffect(() => {
+                    if (values.study_area) {
+                      setAreaTestOptions(
+                        pruebasPorArea[values.study_area] || []
+                      );
+                      setFieldValue("area_test", "");
+                    } else {
+                      setAreaTestOptions([]);
+                      setFieldValue("area_test", "");
+                    }
+                  }, [values.study_area]);
 
-                {activity_type === "Otro" && (
-                  <InputField
-                    label="Otro tipo de actividad a realizar"
-                    {...getFieldProps("other_activity")}
-                  />
-                )}
+                  useEffect(() => {
+                    const quantity = Math.min(
+                      4,
+                      parseInt(values.user_quantity) || 0
+                    );
+                    const updated = [...values.partners];
 
-                <InputSelect
-                  label="Área de estudio"
-                  name="study_area"
-                  value={study_area}
-                  onChange={setStudyArea}
-                  options={areasOfStudy}
-                  placeholder="Selecciona un área de estudio"
-                />
+                    while (updated.length < quantity) {
+                      updated.push({ name: "", last_name: "" });
+                    }
+                    while (updated.length > quantity) {
+                      updated.pop();
+                    }
 
-                <InputSelect
-                  label="Área de prueba"
-                  name="area_test"
-                  value={area_test}
-                  onChange={setAreaTest}
-                  options={areaTestOptions}
-                  placeholder={
-                    study_area
-                      ? "Selecciona un área de prueba"
-                      : "Primero selecciona un área de estudio"
-                  }
-                  disabled={!study_area}
-                />
+                    setFieldValue("partners", updated);
+                  }, [values.user_quantity]);
 
-                <InputField
-                  type="number"
-                  label="Cantidad de acompañantes (máx 4)"
-                  value={user_quantity}
-                  onChange={handleUserQuantityChange}
-                />
+                  return (
+                    <Form>
+                      <ModalBody>
+                        <InputSelect
+                          label="Tipo de actividad"
+                          name="activity_type"
+                          value={values.activity_type}
+                          onChange={(value) =>
+                            setFieldValue("activity_type", value)
+                          }
+                          options={typesOfActivities}
+                          placeholder="Selecciona un tipo de actividad"
+                        />
 
-                {partners.map((partner, index) => (
-                  <div
-                    key={index}
-                    className="grid grid-cols-2 gap-2"
-                  >
-                    <InputField
-                      label={`Nombre acompañante ${index + 1}`}
-                      value={partner.name}
-                      onChange={(e) =>
-                        handlePartnerChange(index, "name", e.target.value)
-                      }
-                    />
-                    <InputField
-                      label={`Apellido acompañante ${index + 1}`}
-                      value={partner.last_name}
-                      onChange={(e) =>
-                        handlePartnerChange(index, "last_name", e.target.value)
-                      }
-                    />
-                  </div>
-                ))}
+                        {values.activity_type === "Otro" && (
+                          <InputField
+                            label="Otro tipo de actividad a realizar"
+                            name="other_activity"
+                            value={values.other_activity}
+                            onChange={handleChange}
+                          />
+                        )}
 
-                <InputField
-                  label="Nombre del docente que asignó la actividad"
-                  {...getFieldProps("teachers_name")}
-                />
-              </ModalBody>
+                        <InputSelect
+                          label="Área de estudio"
+                          name="study_area"
+                          value={values.study_area}
+                          onChange={(value) =>
+                            setFieldValue("study_area", value)
+                          }
+                          options={areasOfStudy}
+                          placeholder="Selecciona un área de estudio"
+                        />
 
-              <ModalFooter>
-                <Button
-                  color="danger"
-                  variant="light"
-                  onPress={onClose}
-                >
-                  Cerrar
-                </Button>
-                <Button
-                  color="primary"
-                  isLoading={loading}
-                  onPress={handleReservation}
-                >
-                  Reservar
-                </Button>
-              </ModalFooter>
+                        <InputSelect
+                          label="Área de prueba"
+                          name="area_test"
+                          value={values.area_test}
+                          onChange={(value) =>
+                            setFieldValue("area_test", value)
+                          }
+                          options={areaTestOptions}
+                          placeholder={
+                            values.study_area
+                              ? "Selecciona un área de prueba"
+                              : "Primero selecciona un área de estudio"
+                          }
+                          disabled={!values.study_area}
+                        />
+
+                        <InputField
+                          type="number"
+                          name="user_quantity"
+                          label="Cantidad de acompañantes (máx 4)"
+                          value={values.user_quantity}
+                          onChange={handleChange}
+                        />
+
+                        {values.partners.map((partner, index) => (
+                          <div
+                            key={index}
+                            className="grid grid-cols-2 gap-2"
+                          >
+                            <InputField
+                              label={`Nombre acompañante ${index + 1}`}
+                              value={partner.name}
+                              onChange={(e) =>
+                                setFieldValue(
+                                  `partners[${index}].name`,
+                                  e.target.value
+                                )
+                              }
+                            />
+                            <InputField
+                              label={`Apellido acompañante ${index + 1}`}
+                              value={partner.last_name}
+                              onChange={(e) =>
+                                setFieldValue(
+                                  `partners[${index}].last_name`,
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                        ))}
+
+                        <InputField
+                          label="Nombre del docente que asignó la actividad"
+                          name="teachers_name"
+                          value={values.teachers_name}
+                          onChange={handleChange}
+                        />
+                      </ModalBody>
+
+                      <ModalFooter>
+                        <Button
+                          color="danger"
+                          variant="light"
+                          onPress={onClose}
+                        >
+                          Cerrar
+                        </Button>
+                        <Button
+                          color="primary"
+                          isLoading={loading}
+                          type="submit"
+                        >
+                          Reservar
+                        </Button>
+                      </ModalFooter>
+                    </Form>
+                  );
+                }}
+              </Formik>
             </>
           )}
         </ModalContent>
