@@ -12,6 +12,7 @@ import {
 import { useReservationStore } from "../../stores";
 import moment from "moment";
 import "moment/locale/es";
+import { UpdateBookingState } from "./components/UpdateBookingState";
 
 const statusColors = {
   confirmada: "bg-primary text-full-white",
@@ -50,7 +51,10 @@ export const Reservations = () => {
     }
   };
 
-  const paginatedData = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const paginatedData = filtered.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const toggleExpand = (id) => {
     setExpanded((prev) => (prev === id ? null : id));
@@ -87,8 +91,7 @@ export const Reservations = () => {
 
         {/* Cards */}
         <div className="grid grid-cols-1 gap-6">
-          {paginatedData
-          .map((reserva) => {
+          {paginatedData.map((reserva) => {
             const isExpanded = expanded === reserva.id;
             const formattedDuration =
               reserva.duration <= 1
@@ -191,6 +194,9 @@ export const Reservations = () => {
                           {reserva.user.last_name}{" "}
                           {reserva.user.second_last_name}
                         </p>
+                        <div className="mt-4 flex flex-wrap gap-3">
+                          <UpdateBookingState bookingId={reserva.id} />
+                        </div>
                       </>
                     )}
                   </div>
