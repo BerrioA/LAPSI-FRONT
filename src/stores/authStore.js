@@ -22,10 +22,7 @@ export const useAuthStore = create(
         try {
           const response = await axios.post(
             `${BASE_URL}/auth/login`,
-            {
-              email,
-              password,
-            },
+            { email, password },
             { withCredentials: true }
           );
 
@@ -35,6 +32,7 @@ export const useAuthStore = create(
 
           const chargeProfile = useProfileStore.getState().profile;
           await chargeProfile();
+
           const chargeUsers = userStore.getState().fetchUsers;
           await chargeUsers();
 
@@ -60,6 +58,7 @@ export const useAuthStore = create(
           email,
           password,
         } = data;
+
         set({ loading: true, error: null });
 
         try {
@@ -127,8 +126,8 @@ export const useAuthStore = create(
             refreshToken: null,
           });
 
-          localStorage.removeItem("profile-storage");
-          localStorage.removeItem("session-user");
+          sessionStorage.removeItem("profile-storage");
+          sessionStorage.removeItem("session-user");
 
           return true;
         } catch (err) {
@@ -143,6 +142,11 @@ export const useAuthStore = create(
     }),
     {
       name: "session-user",
+      storage: {
+        getItem: (key) => sessionStorage.getItem(key),
+        setItem: (key, value) => sessionStorage.setItem(key, value),
+        removeItem: (key) => sessionStorage.removeItem(key),
+      },
       partialize: (state) => ({
         isLoggedIn: state.isLoggedIn,
       }),

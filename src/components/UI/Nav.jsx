@@ -12,24 +12,31 @@ import {
 import { Link } from "react-router-dom";
 
 export const LapsiLogo = () => {
-  return <img className="h-9 w-9" src="/Logo.webp" alt="Logo" />;
+  return (
+    <img
+      className="h-9 w-9"
+      src="/Logo.webp"
+      alt="Logo"
+    />
+  );
 };
 
 export const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [
-    "Inicio",
-    "Salas",
-    "Misión",
-    "Visión",
-    "Sobre Nosotros",
-    "Iniciar sesión",
-    "Registrarse",
+    { label: "Inicio", path: "/" },
+    { label: "Salas", path: "/salas" },
+    { label: "Misión", path: "/mision" },
+    { label: "Visión", path: "/vision" },
+    { label: "Sobre Nosotros", path: "/nosotros" },
+    { label: "Iniciar sesión", path: "/login" },
+    { label: "Registrarse", path: "/register" },
   ];
 
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
+      {/* IZQUIERDA: Toggle y logo */}
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -41,33 +48,24 @@ export const Nav = () => {
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link className="font-semibold text-secondary" to="/">
-            Inicio
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive>
-          <Link aria-current="page" to="#">
-            Salas
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link className="font-semibold text-secondary" to="#">
-            Misión
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link className="font-semibold text-secondary" to="#">
-            Visión
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link className="font-semibold text-secondary" to="#">
-            Sobre Nosotros
-          </Link>
-        </NavbarItem>
+      {/* CENTRO: menú visible solo en pantallas >= sm */}
+      <NavbarContent
+        className="hidden sm:flex gap-4"
+        justify="center"
+      >
+        {menuItems.slice(0, 5).map((item) => (
+          <NavbarItem key={item.label}>
+            <Link
+              className="font-semibold text-secondary"
+              to={item.path}
+            >
+              {item.label}
+            </Link>
+          </NavbarItem>
+        ))}
       </NavbarContent>
+
+      {/* DERECHA: botones login/registro */}
       <NavbarContent justify="end">
         <NavbarItem className="text-primary hidden lg:flex font-semibold">
           <Link to="/login">Iniciar sesión</Link>
@@ -75,30 +73,25 @@ export const Nav = () => {
         <NavbarItem>
           <Button
             as={Link}
-            className="font-semibold bg-primary-900 text-off-white"
             to="/register"
             variant="flat"
+            className="font-semibold bg-primary-900 text-off-white"
           >
             Registrarse
           </Button>
         </NavbarItem>
       </NavbarContent>
+
+      {/* MENÚ RESPONSIVO (para móviles) */}
       <NavbarMenu>
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
+        {menuItems.map((item) => (
+          <NavbarMenuItem key={item.label}>
             <Link
-              className="w-full"
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                  ? "danger"
-                  : "foreground"
-              }
-              to="#"
-              size="lg"
+              to={item.path}
+              onClick={() => setIsMenuOpen(false)}
+              className="w-full font-semibold text-secondary"
             >
-              {item}
+              {item.label}
             </Link>
           </NavbarMenuItem>
         ))}

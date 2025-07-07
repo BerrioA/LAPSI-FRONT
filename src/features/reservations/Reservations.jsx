@@ -194,9 +194,11 @@ export const Reservations = () => {
                           {reserva.user.last_name}{" "}
                           {reserva.user.second_last_name}
                         </p>
-                        <div className="mt-4 flex flex-wrap gap-3">
-                          <UpdateBookingState bookingId={reserva.id} />
-                        </div>
+                        {reserva.status === "confirmada" && (
+                          <div className="mt-4 flex flex-wrap gap-3">
+                            <UpdateBookingState bookingId={reserva.id} />
+                          </div>
+                        )}
                       </>
                     )}
                   </div>

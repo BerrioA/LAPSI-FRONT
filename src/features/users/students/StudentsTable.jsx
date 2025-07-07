@@ -10,10 +10,12 @@ export const StudentsTable = () => {
   }, []);
 
   return (
-    <div>
-      {loading && <Loading />}
-      {error && <Error textError={error} />}
-      <UserTable users={users} />
+    <div className="w-full px-4 sm:px-6 lg:px-8">
+      <div className="max-w-full overflow-x-auto rounded-lg shadow-md">
+        {loading && <Loading />}
+        {error && <Error textError={error} />}
+        <UserTable users={users} />
+      </div>
     </div>
   );
 };

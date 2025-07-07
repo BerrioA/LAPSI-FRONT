@@ -1,4 +1,3 @@
-// components/SessionInitializer.jsx
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useAuthStore } from "../stores";
@@ -8,22 +7,23 @@ export const SessionInitializer = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
-  const shouldSkipRefresh = ["/login", "/register", "/verify-account"].some(
-    (path) => location.pathname.startsWith(path)
-  );
-
   useEffect(() => {
     const initialize = async () => {
+      const shouldSkipRefresh = ["/login", "/register", "/verify-account"].some(
+        (path) => location.pathname.startsWith(path)
+      );
+
       if (!initialized && !token && !shouldSkipRefresh) {
-        await refreshAccessToken(); // intentamos una vez
+        await refreshAccessToken();
       }
-      setLoading(false); // sea exitoso o no
+
+      setLoading(false);
     };
 
     initialize();
-  }, [initialized, token, shouldSkipRefresh]);
+  }, [location.pathname, initialized, token, refreshAccessToken]);
 
-  if (loading) return null; // puedes poner un spinner aquí si quieres
+  if (loading) return null;
 
   return children;
 };

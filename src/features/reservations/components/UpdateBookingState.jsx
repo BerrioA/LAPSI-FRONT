@@ -1,10 +1,11 @@
-// components/Reservations/UpdateBookingState.jsx
+
 import { useState } from "react";
-import { useReservationStore } from "../../../stores";
+import { useReservationStore, useProfileStore } from "../../../stores";
 import { PrimaryButton } from "../../../components/UI/PrimaryButton";
 import { SecondaryButton } from "../../../components/UI";
 
 export const UpdateBookingState = ({ bookingId }) => {
+  const { role } = useProfileStore();
   const { changeBookingState } = useReservationStore();
 
   const [statusToUpdate, setStatusToUpdate] = useState("");
@@ -29,6 +30,13 @@ export const UpdateBookingState = ({ bookingId }) => {
     }, 4000);
   };
 
+  // Mostrar botones según el rol
+  const showApprove = role === "Admin";
+  const showCancel = role === "Admin" || role === "Estudiante";
+
+  // Si no hay botones que mostrar, no renderizar nada
+  if (!showApprove && !showCancel) return null;
+
   return (
     <div className="space-y-2">
       {message && (
@@ -44,28 +52,32 @@ export const UpdateBookingState = ({ bookingId }) => {
       )}
 
       <div className="flex gap-3 flex-wrap">
-        <PrimaryButton
-          text={
-            statusToUpdate === "aprobada" && loading
-              ? "Aprobando..."
-              : "Aprobar"
-          }
-          type="button"
-          disabled={loading}
-          onClick={() => handleUpdate("aprobada")}
-        />
+        {showApprove && (
+          <PrimaryButton
+            text={
+              statusToUpdate === "aprobada" && loading
+                ? "Aprobando..."
+                : "Aprobar"
+            }
+            type="button"
+            disabled={loading}
+            onClick={() => handleUpdate("aprobada")}
+          />
+        )}
 
-        <SecondaryButton
-          text={
-            statusToUpdate === "cancelada" && loading
-              ? "Cancelando..."
-              : "Cancelar"
-          }
-          type="button"
-          disabled={loading}
-          onClick={() => handleUpdate("cancelada")}
-          className="!bg-red-100 !text-red-700 hover:!bg-red-200"
-        />
+        {showCancel && (
+          <SecondaryButton
+            text={
+              statusToUpdate === "cancelada" && loading
+                ? "Cancelando..."
+                : "Cancelar"
+            }
+            type="button"
+            disabled={loading}
+            onClick={() => handleUpdate("cancelada")}
+            className="!bg-red-100 !text-red-700 hover:!bg-red-200"
+          />
+        )}
       </div>
     </div>
   );

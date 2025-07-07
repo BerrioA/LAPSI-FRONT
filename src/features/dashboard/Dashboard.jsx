@@ -1,8 +1,11 @@
+import { useEffect, useMemo } from "react";
 import { HeadPage } from "../../components";
 import { DashboardLayout } from "../../layouts";
 import { useReservationStore, userStore } from "../../stores";
 import { DateCalendar } from "./components/Calendar";
 import { Charts } from "./components/Charts";
+import moment from "moment";
+import "moment/locale/es";
 import {
   UserGroupIcon,
   ClipboardDocumentListIcon,
@@ -24,16 +27,40 @@ const StatCard = ({ icon: Icon, title, value }) => (
 
 export const Dashboard = () => {
   const { users } = userStore();
-  const { reservations } = useReservationStore();
-  const data = [
-    { mes: "Enero", reservas: 10 },
-    { mes: "Febrero", reservas: 18 },
-    { mes: "Marzo", reservas: 5 },
-    { mes: "Abril", reservas: 12 },
-    { mes: "Mayo", reservas: 20 },
-    { mes: "Junio", reservas: 15 },
-    { mes: "Julio", reservas: 8 },
-  ];
+  const { reservations, fetchReservations } = useReservationStore();
+
+  // Agrupar reservas por mes usando useMemo para evitar recálculos innecesarios
+  const monthlyData = useMemo(() => {
+    const grouped = {};
+
+    reservations.forEach((reserva) => {
+      const month = moment(reserva.bookingDate).format("MMMM"); // Ej: "julio"
+      grouped[month] = (grouped[month] || 0) + 1;
+    });
+
+    // Convertimos a array y aseguramos orden cronológico
+    const orderedMonths = moment.months(); // ["enero", "febrero", ...]
+    return orderedMonths.map((mes) => ({
+      mes: mes.charAt(0).toUpperCase() + mes.slice(1), // Capitalizar
+      reservas: grouped[mes] || 0,
+    }));
+  }, [reservations]);
+
+  // Reservas del día
+  const reservasHoy = useMemo(() => {
+    const hoy = moment();
+    return reservations.filter(
+      (r) => r.createdAt && moment(r.createdAt).isSame(hoy, "day")
+    ).length;
+  }, [reservations]);
+
+  const reservasCanceladas = useMemo(() => {
+    return reservations.filter((r) => r.status === "cancelada").length;
+  }, [reservations]);
+
+  useEffect(() => {
+    fetchReservations();
+  }, []);
 
   return (
     <DashboardLayout>
@@ -43,7 +70,7 @@ export const Dashboard = () => {
       />
 
       <div className="space-y-4">
-        {/* Top stats */}
+        {/* Tarjetas de estadísticas */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
             icon={UserGroupIcon}
@@ -58,12 +85,12 @@ export const Dashboard = () => {
           <StatCard
             icon={CalendarDaysIcon}
             title="Reservas Hoy"
-            value="5"
+            value={reservasHoy}
           />
           <StatCard
             icon={QuestionMarkCircleIcon}
-            title="Consultas Pendientes"
-            value="2"
+            title="Reservas Canceladas"
+            value={reservasCanceladas}
           />
         </div>
 
@@ -73,7 +100,7 @@ export const Dashboard = () => {
             <h2 className="text-xl font-semibold text-secondary mb-4 text-center">
               Reservas por mes
             </h2>
-            <Charts data={data} />
+            <Charts data={monthlyData} />
           </div>
           <div className="">
             <DateCalendar />

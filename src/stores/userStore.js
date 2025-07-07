@@ -82,5 +82,35 @@ export const userStore = create(
         set({ loading: false });
       }
     },
+
+    deleteUser: async (userId) => {
+      const uid = useProfileStore.getState().uid;
+
+      if (!uid) {
+        return { success: false, message: "Usuario no autenticado." };
+      }
+
+      set({ loading: true, error: null, message: null });
+
+      try {
+        const res = await axiosInstance.delete(`/users/${userId}`);
+
+        // Refrescar la lista de usuarios tras eliminar
+        const refreshed = await axiosInstance.get(`/users`);
+        set({ users: refreshed.data });
+
+        const message = res.data.message || "Usuario eliminado correctamente.";
+        set({ message });
+
+        return { success: true, message };
+      } catch (error) {
+        const messageError =
+          error?.response?.data?.error || "Error al eliminar el usuario.";
+        set({ error: messageError });
+        return { success: false, message: messageError };
+      } finally {
+        set({ loading: false });
+      }
+    },
   }))
 );
