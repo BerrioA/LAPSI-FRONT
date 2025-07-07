@@ -26,7 +26,7 @@ const StatCard = ({ icon: Icon, title, value }) => (
 );
 
 export const Dashboard = () => {
-  const { users } = userStore();
+  const { users, fetchUsers } = userStore();
   const { reservations, fetchReservations } = useReservationStore();
 
   // Agrupar reservas por mes usando useMemo para evitar recálculos innecesarios
@@ -62,6 +62,9 @@ export const Dashboard = () => {
     fetchReservations();
   }, []);
 
+  useEffect(() => {
+    fetchUsers();
+  }, []);
   return (
     <DashboardLayout>
       <HeadPage
